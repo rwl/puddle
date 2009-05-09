@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,11 +15,14 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines a tree view of resources for the workbench """
+""" Defines a tree view of resources for the workbench.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
 #------------------------------------------------------------------------------
+
+import wx
 
 from enthought.traits.api import Instance, Delegate
 from enthought.pyface.action.api import MenuManager, Group
@@ -49,7 +52,8 @@ ACTION_SETS = "enthought.envisage.ui.workbench.action_sets"
 #------------------------------------------------------------------------------
 
 class ResourceView(WorkbenchView):
-    """ Defines a tree view of resources for the workbench """
+    """ Defines a tree view of resources for the workbench.
+    """
 
     #--------------------------------------------------------------------------
     #  "WorkspaceView" interface:
@@ -124,6 +128,8 @@ class ResourceView(WorkbenchView):
         # Add a double-click handler for opening resources
         tree_viewer.on_trait_change(self.on_double_click, "element_activated")
 
+        tree_viewer.on_trait_change(self.on_key, "key_pressed")
+
         return tree_viewer.control
 
     #--------------------------------------------------------------------------
@@ -181,15 +187,88 @@ class ResourceView(WorkbenchView):
         """ Opens a file resource in the default editor """
 
         if element.is_file:
-            OpenAction(window=self.window).perform(None)
-            self.window.selection = self.tree_viewer.selection
+            self._open_selection()
         elif element.is_folder:
-            from i_workspace import IWorkspace
-            workspace = self.window.application.get_service(IWorkspace)
-            workspace.path = element.absolute_path
-
-            self.tree_viewer.refresh(workspace)
+            self._change_workspace(element)
         else:
             pass
+
+
+    def on_key(self, key_code):
+        """ Handles key presses when the tree is active.
+        """
+        window = self.window
+        viewer = self.tree_viewer
+
+        if viewer.selection:
+            selected = viewer.selection[0]
+        else:
+            return
+
+        if key_code == wx.WXK_RETURN:
+            if selected.is_file:
+                self._open_selection()
+            elif selected.is_folder:
+                self._change_workspace(selected)
+
+        if key_code == wx.WXK_SPACE:
+            if selected.is_file:
+                self._open_selection()
+            elif selected.is_folder:
+                item_id = viewer.control.GetSelection()
+                if viewer.control.IsExpanded(item_id):
+                    viewer.control.Collapse(item_id)
+                else:
+                    viewer.control.Expand(item_id)
+
+        elif key_code == wx.WXK_DOWN:
+            item_id = viewer.control.GetSelection()
+            next = viewer.control.GetNextVisible(item_id)
+            viewer.control.SelectItem(next)
+
+        elif key_code == wx.WXK_UP:
+            item_id = viewer.control.GetSelection()
+            prev = viewer.control.GetPrevSibling(item_id)
+            viewer.control.SelectItem(prev)
+
+        elif key_code == wx.WXK_PAGEDOWN:
+            item_id = viewer.control.GetSelection()
+
+            if viewer.control.IsExpanded(item_id):
+                sibling = viewer.control.GetNextSibling(item_id)
+            else:
+                parent = viewer.control.GetItemParent(item_id)
+                sibling = viewer.control.GetNextSibling(parent)
+
+            viewer.control.SelectItem(sibling)
+
+        elif key_code == wx.WXK_PAGEUP:
+            item_id = viewer.control.GetSelection()
+            prev = viewer.control.GetItemParent(item_id)
+            viewer.control.SelectItem(prev)
+
+        else:
+            pass
+
+
+    def _open_selection(self):
+        window = self.window
+        viewer = self.tree_viewer
+
+        if viewer.selection:
+            selected = viewer.selection[0]
+        else:
+            return
+
+        OpenAction(window=window).perform(None)
+        window.selection = viewer.selection
+
+
+    def _change_workspace(self, element):
+        from i_workspace import IWorkspace
+        workspace = self.window.application.get_service(IWorkspace)
+        workspace.path = element.absolute_path
+
+        self.tree_viewer.refresh(workspace)
 
 # EOF -------------------------------------------------------------------------
