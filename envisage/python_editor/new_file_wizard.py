@@ -33,10 +33,10 @@ from enthought.traits.ui.api import \
 from enthought.traits.ui.menu import OKCancelButtons
 from enthought.pyface.wizard.api import SimpleWizard, WizardPage
 
-from enthought.plugins.workspace.wizard.container_selection_page import \
-    ContainerSelectionPage
-
 from enthought.envisage.ui.workbench.workbench_window import WorkbenchWindow
+
+from envisage.resource.wizard.container_selection_page import \
+    ContainerSelectionPage
 
 from envisage.resource.i_workspace import IWorkspace
 

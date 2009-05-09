@@ -50,13 +50,11 @@ _DIALOG_TEXT = """
       </table>
 
       <p>
-      %s<br>
-      <br>
       Python %s<br>
       wxPython %s<br>
       </p>
       <p>
-      Copyright &copy; 2008 Richard W. Lincoln
+      %s<br>
       </p>
 
       <p>
@@ -118,7 +116,7 @@ class AboutDialog(EnthoughtAboutDialog):
 
         # Set the page contents.
         html.SetPage(
-            _DIALOG_TEXT % (path, additions, py_version, wx_version, ok)
+            _DIALOG_TEXT % (path, py_version, wx_version, additions, ok)
         )
 
         # Make the 'OK' button the default button.

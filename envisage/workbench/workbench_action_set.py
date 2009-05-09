@@ -36,7 +36,7 @@ class WorkbenchActionSet(ActionSet):
             name="&File", path="MenuBar",
             groups=[
                 "OpenGroup", "CloseGroup", "SaveGroup",
-                "ImportGroup", "ExitGroup"
+                "ImportGroup", "ResourceGroup", "ExitGroup"
             ]
         ),
         Menu(

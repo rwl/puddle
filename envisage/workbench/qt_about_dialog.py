@@ -48,14 +48,12 @@ _DIALOG_TEXT = """
       </table>
 
       <p>
-      %s<br>
-      <br>
       Python %s<br>
       PyQt %s<br>
       Qt %s<br>
       </p>
       <p>
-      Copyright &copy; 2008 Richard W. Lincoln
+      %s<br>
       </p>
   </center>
   </body>
@@ -101,7 +99,7 @@ class AboutDialog(QtAboutDialog):
         # Set the page contents.
         label.setText(
             _DIALOG_TEXT %
-            (path, additions, py_version, pyqt_version, qt_version)
+            (path, py_version, pyqt_version, qt_version, additions)
         )
 
         # Create the button.

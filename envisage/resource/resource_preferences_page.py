@@ -75,7 +75,7 @@ class ResourcePreferencesPage(PreferencesPage):
     #--------------------------------------------------------------------------
 
     traits_view = View(
-        Heading("Resource"),
+        Label("Resource"),
 #        Group(
 #            Item(name="prompt", label="Prompt for workspace on startup."),
 #            show_left=False

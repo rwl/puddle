@@ -33,6 +33,8 @@ from enthought.plugins.ipython_shell.ipython_shell_plugin \
 
 from enthought.logger.plugin.logger_plugin import LoggerPlugin
 
+from envisage.plugin import EnvisagePlugin
+
 from envisage.workbench.workbench_plugin import WorkbenchPlugin
 from envisage.workbench.workbench_application import WorkbenchApplication
 
@@ -62,10 +64,11 @@ def main():
         id = "envisage",
         plugins = [
             CorePlugin(),
-            PythonShellPlugin(),
-            LoggerPlugin(),
+            EnvisagePlugin(),
             WorkbenchPlugin(),
             ResourcePlugin(),
+            PythonShellPlugin(),
+            LoggerPlugin(),
             PythonEditorPlugin(),
             PropertyViewPlugin()
         ]

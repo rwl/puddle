@@ -22,6 +22,8 @@
 #  Imports:
 #------------------------------------------------------------------------------
 
+from enthought.traits.api import List
+
 from enthought.envisage.ui.workbench.workbench_plugin import WorkbenchPlugin \
     as EnthoughtWorkbenchPlugin
 
@@ -34,7 +36,7 @@ class WorkbenchPlugin(EnthoughtWorkbenchPlugin):
     """
 
     #--------------------------------------------------------------------------
-    #  "WorkbenchPlugin" interface:
+    #  "EnthoughtWorkbenchPlugin" interface:
     #--------------------------------------------------------------------------
 
     def _my_preferences_pages_default(self):

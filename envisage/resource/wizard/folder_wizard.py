@@ -194,6 +194,7 @@ class FolderWizard(SimpleWizard):
         if view is not None:
             # FIXME: Refresh the parent folder not the whole tree
             workspace = self.window.application.get_service(IWorkspace)
+            workspace.path = path
             wtv = view.tree_viewer.refresh(workspace)
 
 if __name__ == "__main__":

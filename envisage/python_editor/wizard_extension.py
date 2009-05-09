@@ -13,7 +13,8 @@
 #
 #------------------------------------------------------------------------------
 
-""" Python editor wizard extensions """
+""" Python editor wizard extensions.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -21,17 +22,17 @@
 
 from enthought.pyface.api import ImageResource
 
-from enthought.plugins.workspace.wizard_extension import WizardExtension
+from envisage.resource.wizard_extension import WizardExtension
 
 #------------------------------------------------------------------------------
 #  "NewFileWizardExtension" class:
 #------------------------------------------------------------------------------
 
 class NewFileWizardExtension(WizardExtension):
-    """ Contributes a new file wizard """
-
+    """ Contributes a new file wizard .
+    """
     # The wizard contribution's globally unique identifier.
-    id = "enthought.plugins.python_editor.new_file_wizard"
+    id = "envisage.python_editor.new_file_wizard"
 
     # Human readable identifier
     name = "File"
@@ -40,8 +41,8 @@ class NewFileWizardExtension(WizardExtension):
     image = ImageResource("document")
 
     # The class of contributed wizard
-    wizard_class = "enthought.plugins.python_editor.new_file_wizard:" \
-    "NewFileWizard"
+    wizard_class = "envisage.python_editor.new_file_wizard:" \
+        "NewFileWizard"
 
     # A longer description of the wizard's function
     description = "Create a new file resource"

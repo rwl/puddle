@@ -38,11 +38,9 @@ class WorkbenchPreferencesPage(EnthoughtWorkbenchPreferencesPage):
     # Traits UI views ---------------------------------------------------------
 
     trait_view = View(
-        Heading("Workbench"),
+        Label("Workbench"),
         "_",
-        Group(
-              Item(name="prompt_on_exit"),
-        )
+        Group(Item(name="prompt_on_exit"))
     )
 
 # EOF -------------------------------------------------------------------------

@@ -15,83 +15,78 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines the workbench application.
+""" Envisage IDE plug-in.
 """
 
 #------------------------------------------------------------------------------
 #  Imports:
 #------------------------------------------------------------------------------
 
-from os.path import dirname
+from enthought.traits.api import List
 
-from enthought.traits.api import Tuple
-
-from enthought.envisage.ui.workbench.api import WorkbenchApplication
-
-from enthought.pyface.api import ImageResource, SplashScreen
-
-from enthought.etsconfig.api import ETSConfig
-
-if ETSConfig.toolkit == "wx":
-    from wx_about_dialog import AboutDialog
-elif ETSConfig.toolkit == "qt4":
-    from qt_about_dialog import AboutDialog
-else:
-    from enthought.pyface.api import AboutDialog
+from enthought.envisage.api import Plugin
 
 #------------------------------------------------------------------------------
-#  "WorkbenchApplication" class:
+#  "EnvisagePlugin" class:
 #------------------------------------------------------------------------------
 
-class WorkbenchApplication(WorkbenchApplication):
-    """ Defines the workbench application.
+class EnvisagePlugin(Plugin):
+    """ Overridden actions and preferences pages.
     """
 
     #--------------------------------------------------------------------------
-    #  IApplication interface:
+    #  "Plugin" interface:
     #--------------------------------------------------------------------------
 
-    # The application's globally unique Id.
-    id = "envisage.workbench"
+    # Unique plugin identifier.
+    id = "envisage.envisage_plugin"
 
-    #--------------------------------------------------------------------------
-    #  WorkbenchApplication interface:
-    #--------------------------------------------------------------------------
-
-    # The icon used on window title bars etc.
-    icon = ImageResource("frame.ico")
-
-    # The name of the application (also used on window title bars etc).
+    # Human readable plugin name.
     name = "Envisage"
 
-    # The default position of the main window.
-    window_position = Tuple((0, 0))
+    #--------------------------------------------------------------------------
+    #  "EnvisagePlugin" interface:
+    #--------------------------------------------------------------------------
 
-    # The default size of the main window.
-#    window_size = Tuple((1024, 768))
-    window_size = Tuple((1024, 768))
+    # The Ids of the extension points that this plugin offers.
+    VIEWS = "enthought.envisage.ui.workbench.views"
+    PERSPECTIVES = "enthought.envisage.ui.workbench.perspectives"
+    ACTION_SETS = "enthought.envisage.ui.workbench.action_sets"
 
+    # Contributions to the views extension point made by this plug-in.
+    my_views = List(contributes_to=VIEWS)
 
-    def _about_dialog_default(self):
+    # Contributions to the perspective extension point made by this plug-in.
+    my_perspectives = List(contributes_to=PERSPECTIVES)
+
+    # Contributions to the action set extension point made by this plug-in.
+    my_action_sets = List(contributes_to=ACTION_SETS)
+
+    #--------------------------------------------------------------------------
+    #  Private interface:
+    #--------------------------------------------------------------------------
+
+    def _my_views_default(self):
         """ Trait initialiser.
         """
-        about_dialog = AboutDialog(
-            parent=self.workbench.active_window.control,
-            image=ImageResource("splash"),
-            additions=["Copyright &copy; 2009"],
-        )
+        from welcome_view import WelcomeView
 
-        return about_dialog
+        return [WelcomeView]
 
 
-    def _splash_screen_default(self):
+    def _my_perspectives_default(self):
         """ Trait initialiser.
         """
-        splash_screen = SplashScreen(
-            image=ImageResource("splash"), show_log_messages=False,
-            text_color="black"#, text_font="10 point Monospace"
-        )
+        from perspective import WelcomePerspective, DefaultPerspective
 
-        return splash_screen
+        return [WelcomePerspective, DefaultPerspective]
+
+
+    def _my_action_sets_default(self):
+        """ Trait initialiser.
+        """
+        from welcome_action import EnvisageActionSet
+
+        return [EnvisageActionSet]
 
 # EOF -------------------------------------------------------------------------

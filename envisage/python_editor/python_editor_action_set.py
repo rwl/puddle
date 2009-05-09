@@ -54,8 +54,8 @@ class PythonEditorActionSet(WorkbenchActionSet):
             groups=["ContainerGroup", "ComponentGroup", "OtherGroup"]
         ),
         Menu(
-            name="&Run", path="MenuBar", after="Edit",
-            groups=["ShortcutGroup", "RunAsGroup"]
+            name="&Tools", path="MenuBar", before="Help",
+            groups=["RunGroup", "IPythonShellGroup"]
         ),
         Menu(
             name="&Run As", path="Workspace", group="SubMenuGroup",
@@ -81,7 +81,7 @@ class PythonEditorActionSet(WorkbenchActionSet):
             "NewFileAction"
         ),
         Action(
-            path="MenuBar/Run", group="RunAsGroup",
+            path="MenuBar/Tools", group="RunGroup",
             class_name="envisage.python_editor.python_run_action:"
             "PythonRunAction"
         ),
