@@ -40,6 +40,8 @@ class Image(Component):
     """
     image_file = File
 
+    bgcolor = "transparent"
+
     #---------------------------------------------------------------------------
     #  Draw component on the graphics context:
     #---------------------------------------------------------------------------
@@ -69,6 +71,8 @@ class RelativeImage(Component):
 
     image_file = File#(filter="Image Files (*.png, *.jpg, *.gif)|" \
 #        "*.png;*.jpg;*.gif|All Files (*.*)|*.*")
+
+    bgcolor = "transparent"
 
     selected = Event
 
@@ -182,16 +186,16 @@ class WelcomeView(WorkbenchView):
         """ Trait initialiser.
         """
 
-        logo_path = join(dirname(__file__), "images", "energy.png")
-        logo = Image(image_file=logo_path, bounds=[233, 100],
-            position=[20, 20])
+        logo_path = join(dirname(__file__), "images", "python.png")
+        logo = Image(image_file=logo_path, bounds=[256, 256],
+            position=[25, 25])
 
         workbench_path = join(dirname(__file__), "images",
-            "folder-development.png")
+            "workbench.png")
         workbench = RelativeImage(image_file=workbench_path, bounds=[128, 128])
         workbench.on_trait_change(self._on_workbench, "selected")
 
-        canvas = Canvas(bgcolor="white", show_axes=True)
+        canvas = Canvas(bgcolor="white")
         canvas.add(logo)
         canvas.add(workbench)
 
