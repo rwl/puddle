@@ -149,7 +149,7 @@ class ExitAction(ExitAction):
     description = "Exit the application"
 
     # The action"s image (displayed on tool bar tools etc).
-    image = None#ImageResource("exit")
+    image = ImageResource("exit")
 
     # The action"s name (displayed on menus/tool bar tools etc).
     name = "E&xit"
@@ -173,7 +173,7 @@ class PreferencesAction(EditPreferencesAction):
     #--------------------------------------------------------------------------
 
     # The action"s image (displayed on tool bar tools etc).
-    image = None#ImageResource("preferences")
+    image = ImageResource("preferences")
 
 #------------------------------------------------------------------------------
 #  "AboutAction" class:

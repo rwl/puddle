@@ -54,7 +54,7 @@ class SaveAllAction(Action):
     tooltip = "Save All (Shift+Ctrl+S)"
 
     # The action's image (displayed on tool bar tools etc):
-    image = ImageResource("save_all", search_path=[IMAGE_LOCATION])
+#    image = ImageResource("save_all", search_path=[IMAGE_LOCATION])
 
     # Keyboard accelerator
     accelerator = "Shift+Ctrl+S"

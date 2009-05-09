@@ -172,8 +172,8 @@ class ResourceActionSet(WorkbenchActionSet):
         ),
         Action(
             path="ToolBar/ResourceToolBar", group="FileGroup",
-            class_name="envisage.resource.action.save_all_action:"
-            "SaveAllAction"
+            class_name="envisage.resource.action.save_as_action:"
+            "SaveAsAction"
         ),
         Action(
             path="ToolBar/ResourceToolBar", group="ImportGroup",

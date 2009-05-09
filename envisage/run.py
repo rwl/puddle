@@ -41,6 +41,7 @@ from envisage.workbench.workbench_application import WorkbenchApplication
 from envisage.resource.resource_plugin import ResourcePlugin
 from envisage.python_editor.python_editor_plugin import PythonEditorPlugin
 from envisage.property_view.property_view_plugin import PropertyViewPlugin
+from envisage.image_editor.image_editor_plugin import ImageEditorPlugin
 
 #------------------------------------------------------------------------------
 #  Logging:
@@ -70,7 +71,8 @@ def main():
             PythonShellPlugin(),
             LoggerPlugin(),
             PythonEditorPlugin(),
-            PropertyViewPlugin()
+            PropertyViewPlugin(),
+            ImageEditorPlugin()
         ]
     )
 

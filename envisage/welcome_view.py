@@ -187,7 +187,7 @@ class WelcomeView(WorkbenchView):
         """
 
         logo_path = join(dirname(__file__), "images", "python.png")
-        logo = Image(image_file=logo_path, bounds=[256, 256],
+        logo = Image(image_file=logo_path, bounds=[100, 196],
             position=[25, 25])
 
         workbench_path = join(dirname(__file__), "images",

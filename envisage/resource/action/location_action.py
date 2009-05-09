@@ -56,6 +56,9 @@ class LocationAction(Action):
     # The action"s name (displayed on menus/tool bar tools etc):
     name = "&Location..."
 
+    # The action's image (displayed on tool bar tools etc):
+    image = ImageResource("location", search_path=[IMAGE_LOCATION])
+
     # A short description of the action used for tooltip text etc:
     tooltip = "Move workspace location"
 
