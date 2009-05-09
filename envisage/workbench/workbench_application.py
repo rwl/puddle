@@ -78,7 +78,7 @@ class WorkbenchApplication(WorkbenchApplication):
         about_dialog = AboutDialog(
             parent=self.workbench.active_window.control,
             image=ImageResource("splash"),
-            additions=["Copyright &copy; 2009"],
+            additions=["@see:  Tango Icon Library"],
         )
 
         return about_dialog
