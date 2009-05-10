@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines classes for creating a new folder with a wizard """
+""" Defines classes for creating a new folder with a wizard.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -53,7 +54,8 @@ WORKSPACE_VIEW = "envisage.resource.resource_view"
 #------------------------------------------------------------------------------
 
 class FolderWizardPage(WizardPage):
-    """ Wizard page for folder creation """
+    """ Wizard page for folder creation.
+    """
 
     #--------------------------------------------------------------------------
     #  FolderWizardPage interface:
@@ -83,10 +85,8 @@ class FolderWizardPage(WizardPage):
         Group(
             Heading("Folder"),
 #            Item("_label", style="readonly", show_label=False),
-            "_",
-        ),
-        Item("folder_name")
-    )
+            "_"),
+        Item("folder_name"))
 
 #    @cached_property
 #    def _get_abs_path(self):
@@ -117,10 +117,9 @@ class FolderWizardPage(WizardPage):
 
 
     def _folder_name_changed(self):
-        """ Sets a flag when the name is changed """
-
+        """ Sets a flag when the name is changed.
+        """
         self._named = True
-
         self.complete = True
 
     #--------------------------------------------------------------------------
@@ -128,8 +127,8 @@ class FolderWizardPage(WizardPage):
     #--------------------------------------------------------------------------
 
     def create_page(self, parent):
-        """ Create the wizard page. """
-
+        """ Create the wizard page.
+        """
         ui = self.edit_traits(parent=parent, kind='subpanel')
 
         return ui.control
@@ -139,8 +138,8 @@ class FolderWizardPage(WizardPage):
 #------------------------------------------------------------------------------
 
 class FolderWizard(SimpleWizard):
-    """ A wizard for folder creation """
-
+    """ A wizard for folder creation.
+    """
     # The dialog title
     title = Str("New Folder")
 
@@ -157,8 +156,8 @@ class FolderWizard(SimpleWizard):
     #--------------------------------------------------------------------------
 
     def __init__(self, window, **traits):
-        """ Returns a FolderWizard """
-
+        """ Returns a FolderWizard.
+        """
         if window is not None:
             self.window = window
             workspace = window.application.get_service(IWorkspace)
@@ -178,10 +177,8 @@ class FolderWizard(SimpleWizard):
 
     def _finished_fired(self):
         """ Performs the folder resource creation if the wizard is
-        finished successfully.
-
+            finished successfully.
         """
-
         csp = self.pages[0]
         fwp = self.pages[1]
 
@@ -196,6 +193,7 @@ class FolderWizard(SimpleWizard):
             workspace = self.window.application.get_service(IWorkspace)
             workspace.path = path
             wtv = view.tree_viewer.refresh(workspace)
+
 
 if __name__ == "__main__":
     wizard = FolderWizard(window=None)

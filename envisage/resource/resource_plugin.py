@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -48,26 +48,25 @@ logger = logging.getLogger(__name__)
 #------------------------------------------------------------------------------
 
 class ResourcePlugin(Plugin):
-    """ Resource plug-in """
-
-    # Extension point IDs
+    """ Resource plug-in.
+    """
+    # Extension point IDs.
     SERVICE_OFFERS = "enthought.envisage.service_offers"
     VIEWS = "enthought.envisage.ui.workbench.views"
     PREFERENCES_PAGES = "enthought.envisage.ui.workbench.preferences_pages"
     ACTION_SETS = "enthought.envisage.ui.workbench.action_sets"
     BINDINGS = "enthought.plugins.python_shell.bindings"
-#    BINDINGS = "enthought.plugins.ipython_shell.bindings"
 
-    # Resource extension point IDs
+    # Resource extension point IDs.
     NEW_WIZARDS = "envisage.resource.new_wizards"
     IMPORT_WIZARDS = "envisage.resource.import_wizards"
     EXPORT_WIZARDS = "envisage.resource.export_wizards"
     EDITORS = "envisage.resource.editors"
 
-    # Unique plugin identifier
+    # Unique plugin identifier.
     id = "envisage.resource"
 
-    # Human readable plugin name
+    # Human readable plugin name.
     name = "Resource"
 
     #--------------------------------------------------------------------------
@@ -171,34 +170,31 @@ class ResourcePlugin(Plugin):
 
 
     def stop(self):
-        """ Stop the plug-in """
-
+        """ Stop the plug-in.
+        """
         from i_workspace import IWorkspace
         workspace = self.application.get_service(IWorkspace)
 
-        self.application.preferences.set(
-            "envisage.resource.default",
-            workspace.absolute_path
-        )
+        self.application.preferences.set("envisage.resource.default",
+            workspace.absolute_path)
 
     #--------------------------------------------------------------------------
     #  "ResourcePlugin" interface:
     #--------------------------------------------------------------------------
 
     def _resource_service_offers_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         resource_service_offer = ServiceOffer(
             protocol="envisage.resource.i_workspace.IWorkspace",
-            factory=self._create_workspace_service
-        )
+            factory=self._create_workspace_service)
 
         return [resource_service_offer]
 
 
     def _contributed_views_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         from resource_view import ResourceView
         from resource_tree_view import ResourceTreeView
 
@@ -206,16 +202,16 @@ class ResourcePlugin(Plugin):
 
 
     def _preferences_pages_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         from resource_preferences_page import ResourcePreferencesPage
 
         return [ResourcePreferencesPage]
 
 
     def _action_sets_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         from resource_action_set import \
             ResourceActionSet, ContextMenuActionSet
 
@@ -223,34 +219,33 @@ class ResourcePlugin(Plugin):
 
 
     def _bindings_extensions_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         from i_workspace import IWorkspace
-
         workspace = self.application.get_service(IWorkspace)
 
         return [{"workspace": workspace}]
 
 
     def _new_resource_wizards_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         from resource_wizard_extension import FolderWizardExtension
 
         return [FolderWizardExtension]
 
 
     def _import_resource_wizards_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         from resource_wizard_extension import ImportFileSystemWizardExtension
 
         return []
 
 
     def _export_resource_wizards_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         return []
 
     #--------------------------------------------------------------------------
@@ -258,24 +253,23 @@ class ResourcePlugin(Plugin):
     #--------------------------------------------------------------------------
 
     def _create_workspace_service(self):
-        """ Factory method for the "Workspace" service. """
-
+        """ Factory method for the "Workspace" service.
+        """
         # Only do imports when you need to! This makes sure that the import
         # only happens when somebody needs an "IWorkspace" service.
         from resource import File
 
-        path = self.application.preferences.get(
-            "envisage.resource.default", expanduser("~")
-        )
+        path = self.application.preferences.get("envisage.resource.default",
+            expanduser("~"))
 
         return File(path)
 
 
-    def _exit_application(self):
-        """ Stops all plug-ins and exits """
-
-        # FIXME: Is there a cleaner way of exiting?
-        self.application.stop()
-        sys.exit()
+#    def _exit_application(self):
+#        """ Stops all plug-ins and exits.
+#        """
+#        # FIXME: Is there a cleaner way of exiting?
+#        self.application.stop()
+#        sys.exit()
 
 # EOF -------------------------------------------------------------------------

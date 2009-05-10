@@ -211,7 +211,7 @@ class ResourceView(WorkbenchView):
             elif selected.is_folder:
                 self._change_workspace(selected)
 
-        if key_code == wx.WXK_SPACE:
+        elif key_code == wx.WXK_SPACE:
             if selected.is_file:
                 self._open_selection()
             elif selected.is_folder:

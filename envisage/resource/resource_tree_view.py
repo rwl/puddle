@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines a workbench tree view of resources """
+""" Defines a workbench tree view of resources.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -44,7 +45,8 @@ ACTION_SETS = "enthought.envisage.ui.workbench.action_sets"
 #------------------------------------------------------------------------------
 
 class ResourceTreeView(WorkbenchView):
-    """ Defines a workbench tree view of resources """
+    """ Defines a workbench tree view of resources.
+    """
 
     #--------------------------------------------------------------------------
     #  "ResourceTreeView" interface:
@@ -87,12 +89,11 @@ class ResourceTreeView(WorkbenchView):
     #--------------------------------------------------------------------------
 
     def create_control(self, parent):
-        """ Create the view contents """
-
+        """ Create the view contents.
+        """
 #        browser = WorkspaceBrowser(window=self.window)
-        ui = self.edit_traits(
-            parent=parent, view=self._create_view(), kind="subpanel"
-        )
+        ui = self.edit_traits(parent=parent, view=self._create_view(),
+            kind="subpanel")
 
         return ui.control
 
@@ -101,8 +102,8 @@ class ResourceTreeView(WorkbenchView):
     #--------------------------------------------------------------------------
 
     def _workspace_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         # Note that we always offer the service via its name, but look it up
         # via the actual protocol.
         from i_workspace import IWorkspace
@@ -112,29 +113,26 @@ class ResourceTreeView(WorkbenchView):
 
 
     def _context_menu_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         extensions = self.window.application.get_extensions(ACTION_SETS)
         action_sets = [ext(window=self.window) for ext in extensions]
 
         action_manager_builder = WorkbenchActionManagerBuilder(
-            window=self.window, action_sets=action_sets
-        )
+            window=self.window, action_sets=action_sets)
 
         context_menu_manager = MenuManager(
-            name="Resource", id="envisage.resource.context_menu"
-        )
+            name="Resource", id="envisage.resource.context_menu")
 
         action_manager_builder.initialize_action_manager(
-            context_menu_manager, "Resource"
-        )
+            context_menu_manager, "Resource")
 
         return context_menu_manager
 
 
     def _create_view(self):
-        """ Create a view with a tree editor """
-
+        """ Create a view with a tree editor.
+        """
         view = View(
             Item(
                 name="workspace", show_label=False,
@@ -154,14 +152,14 @@ class ResourceTreeView(WorkbenchView):
 
 
     def _on_dclick(self, object):
-        """ Handle tree nodes being double clicked """
-
+        """ Handle tree nodes being double clicked.
+        """
         self.window.edit(object)
 
 
     def _on_select(self, object):
-        """ Handle tree node selection """
-
+        """ Handle tree node selection.
+        """
         pass
 
 # EOF -------------------------------------------------------------------------

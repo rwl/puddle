@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Workspace plug-in actions """
+""" Resource plug-in actions.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -37,7 +38,8 @@ logger = logging.getLogger(__name__)
 #------------------------------------------------------------------------------
 
 class OpenWithAction(Action):
-    """ Defines an action that open the current resource """
+    """ Defines an action that opens the current resource.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -71,22 +73,16 @@ class OpenWithAction(Action):
 
     def _selection_changed_for_window(self, new):
         """ Makes the action visible if a File with a valid extension
-        is selected
-
+            is selected
         """
-
-#        print "SELECTION CHANGED (OPEN WITH):", new
-
         if len(new) == 1:
             sel = new[0]
+
             if isinstance(sel, File) and (sel.ext in self.editor.extensions):
-#                    self.visible = True
                     self.enabled = True
             else:
-#                self.visible = False
                 self.enabled = False
         else:
-#            self.visible = False
             self.enabled = False
 
     #--------------------------------------------------------------------------
@@ -94,10 +90,11 @@ class OpenWithAction(Action):
     #--------------------------------------------------------------------------
 
     def _enabled_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         if self.window.selection:
             sel = self.window.selection[0]
+
             if isinstance(sel, File) and (sel.ext in self.editor.extensions):
                 return True
             else:
@@ -106,22 +103,9 @@ class OpenWithAction(Action):
             return False
 
 
-#    def _visible_default(self):
-#        """ Trait initialiser """
-#
-#        if self.window.selection:
-#            sel = self.window.selection[0]
-#            if isinstance(sel, File) and (sel.ext in self.editor.extensions):
-#                return True
-#            else:
-#                return False
-#        else:
-#            return False
-
-
     def perform(self, event):
-        """ Performs the action """
-
+        """ Performs the action.
+        """
         selections = self.window.selection
         if selections:
             # Use the first of the selected objects
@@ -130,6 +114,5 @@ class OpenWithAction(Action):
             app = self.window.application
             editor = app.import_symbol(self.editor.editor_class)
             self.window.edit(selection, editor)
-
 
 # EOF -------------------------------------------------------------------------

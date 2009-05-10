@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines an action for moving the workspace to the parent directory """
+""" Defines an action for moving the workspace to the parent directory.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -41,7 +42,8 @@ WORKSPACE_VIEW = "envisage.resource.resource_view"
 #------------------------------------------------------------------------------
 
 class UpAction(Action):
-    """ Defines an action for moving the workspace to the parent directory """
+    """ Defines an action for moving the workspace to the parent directory.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -69,26 +71,17 @@ class UpAction(Action):
     window = Instance(WorkbenchWindow)
 
     #--------------------------------------------------------------------------
-    #  "object" interface:
-    #--------------------------------------------------------------------------
-
-#    def __init__(self, **traits):
-#        """ Returns a new UpAction """
-#        super(UpAction, self).__init__(**traits)
-
-    #--------------------------------------------------------------------------
     #  "Action" interface:
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Perform the action """
-
+        """ Perform the action.
+        """
         # Note that we always offer the service via its name, but look it up
         # via the actual protocol.
         from envisage.resource.i_workspace import IWorkspace
 
         workspace = self.window.application.get_service(IWorkspace)
-
         workspace.path = dirname(workspace.absolute_path)
 
         view = self.window.get_view_by_id(WORKSPACE_VIEW)

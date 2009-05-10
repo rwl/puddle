@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines an action for refreshing a resource """
+""" Defines an action for refreshing a resource.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -43,7 +44,8 @@ WORKSPACE_VIEW = "envisage.resource.resource_view"
 #------------------------------------------------------------------------------
 
 class RefreshAction(Action):
-    """ Defines an action for refreshing a resource  """
+    """ Defines an action for refreshing a resource.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -63,12 +65,13 @@ class RefreshAction(Action):
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Perform the action """
-
+        """ Perform the action.
+        """
         selections = self.window.selection
 
         if selections:
             selection = selections[0]
+
             if isinstance(selection, File):
                 view = self.window.get_view_by_id(WORKSPACE_VIEW)
                 if view is not None:

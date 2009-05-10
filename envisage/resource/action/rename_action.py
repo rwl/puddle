@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines an action for renaming resources in the workspace """
+""" Defines an action for renaming resources in the workspace.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -26,7 +27,6 @@ from os.path import dirname, join
 from enthought.io.api import File
 from enthought.traits.api import HasTraits, Str, Bool, Instance
 from enthought.traits.ui.api import View, Item, Label
-from enthought.traits.ui.menu import OKCancelButtons
 from enthought.pyface.api import ImageResource, confirm, YES
 from enthought.pyface.action.api import Action
 from enthought.envisage.ui.workbench.workbench_window import WorkbenchWindow
@@ -51,7 +51,7 @@ class RenameResource(HasTraits):
         Item("name", show_label=False),
         title="Rename Resource",
         width=0.3,
-        buttons=OKCancelButtons
+        buttons=["OK", "Cancel"]
     )
 
 #------------------------------------------------------------------------------
@@ -59,7 +59,8 @@ class RenameResource(HasTraits):
 #------------------------------------------------------------------------------
 
 class RenameAction(Action):
-    """ Defines an action for renaming resources in the workspace """
+    """ Defines an action for renaming resources in the workspace.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -85,22 +86,22 @@ class RenameAction(Action):
     #--------------------------------------------------------------------------
 
     def _selection_changed_for_window(self, selections):
-        """ Enables the action if the window has editors """
-
+        """ Enables the action if the window has editors.
+        """
         self.enabled = self._is_enabled(selections)
 
 
     def _enabled_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         selections = self.window.selection
 
         return self._is_enabled(selections)
 
 
     def _is_enabled(self, selections):
-        """ Returns true if the action should be enabled """
-
+        """ Returns true if the action should be enabled.
+        """
         if selections and isinstance(selections[0], File):
             return True
         else:
@@ -111,11 +112,11 @@ class RenameAction(Action):
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Perform the action """
-
+        """ Perform the action.
+        """
         selection = self.window.selection[0]
 
-        rr = RenameResource(name=selection.name+selection.ext)
+        rr = RenameResource(name=selection.name + selection.ext)
 
         retval = rr.edit_traits(parent=self.window.control, kind="livemodal")
 

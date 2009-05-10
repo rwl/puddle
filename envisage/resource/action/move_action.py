@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@ from os.path import dirname, join
 from enthought.io.api import File
 from enthought.traits.api import HasTraits, Directory, Bool, Instance
 from enthought.traits.ui.api import View, Item, Label
-from enthought.traits.ui.menu import OKCancelButtons
 from enthought.pyface.api import ImageResource, confirm, YES
 from enthought.pyface.action.api import Action
 from enthought.envisage.ui.workbench.workbench_window import WorkbenchWindow
@@ -43,26 +42,24 @@ WORKSPACE_VIEW = "envisage.resource.resource_view"
 #------------------------------------------------------------------------------
 
 class DirectorySelection(HasTraits):
-    """ Defines a dialog for the destination selection """
-
+    """ Defines a dialog for the destination selection.
+    """
     directory = Directory
 
     traits_view = View(
         Label("Enter or select the directory:"),
         Item(name="directory", style="text", show_label=False),
         Item(name="directory", style="custom", show_label=False),
-        title="Directory Selection",
-        width=0.3,
-        buttons=OKCancelButtons,
-        resizable=True
-    )
+        title="Directory Selection", buttons=["OK", "Cancel"],
+        width=0.3, resizable=True)
 
 #------------------------------------------------------------------------------
 #  "MoveAction" class:
 #------------------------------------------------------------------------------
 
 class MoveAction(Action):
-    """ Defines an action for moving resources """
+    """ Defines an action for moving resources.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -88,22 +85,22 @@ class MoveAction(Action):
     #--------------------------------------------------------------------------
 
     def _selection_changed_for_window(self, selections):
-        """ Enables the action if the window has editors """
-
+        """ Enables the action if the window has editors.
+        """
         self.enabled = self._is_enabled(selections)
 
 
     def _enabled_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         selections = self.window.selection
 
         return self._is_enabled(selections)
 
 
     def _is_enabled(self, selections):
-        """ Returns true if the action should be enabled """
-
+        """ Returns true if the action should be enabled.
+        """
         if selections and isinstance(selections[0], File):
             return True
         else:
@@ -114,8 +111,8 @@ class MoveAction(Action):
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Perform the action """
-
+        """ Perform the action.
+        """
         selection = self.window.selection[0]
 
         ds = DirectorySelection(directory=dirname(selection.absolute_path))

@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines the preferences page for the resource plug-in """
+""" Defines the preferences page for the resource plug-in.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -35,7 +36,8 @@ from enthought.preferences.ui.api import PreferencesPage
 #------------------------------------------------------------------------------
 
 class ResourcePreferencesPage(PreferencesPage):
-    """ Defines the preferences page for the resource plug-in """
+    """ Defines the preferences page for the resource plug-in.
+    """
 
     #--------------------------------------------------------------------------
     #  "PreferencesPage" interface:
@@ -64,8 +66,7 @@ class ResourcePreferencesPage(PreferencesPage):
 
     # The default workspace to use without prompting
     default = Directory(expanduser("~"), exists=False,
-        desc="the default workspace directory location"
-    )
+        desc="the default workspace directory location")
 
     # Refresh workspace on startup?
 #    refresh = Bool(False)
@@ -76,6 +77,7 @@ class ResourcePreferencesPage(PreferencesPage):
 
     traits_view = View(
         Label("Resource"),
+        "_",
 #        Group(
 #            Item(name="prompt", label="Prompt for workspace on startup."),
 #            show_left=False

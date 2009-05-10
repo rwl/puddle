@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines a generic wizard page for file import """
+""" Defines a generic wizard page for file import.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -32,26 +33,21 @@ from enthought.pyface.wizard.api import WizardPage
 #------------------------------------------------------------------------------
 
 class FileImportPage(WizardPage):
-    """ Defines a wizard page for file selection """
-
+    """ Defines a wizard page for file selection.
+    """
     # The name of the file type
     file_type = Str
 
-    data_file = File(
-        exists=True, filter=["All Files|*.*"]
-    )
+    data_file = File(exists=True, filter=["All Files|*.*"])
 
     # A label with instructions
     _label = Property(Str, depends_on=["data_file"])
 
     traits_view = View(
-        Group(
-            Heading("File"),
+        Group(Heading("File"),
             Item("_label", style="readonly", show_label=False),
-            "_",
-        ),
-        Item("data_file")
-    )
+            "_"),
+        Item("data_file") )
 
     #--------------------------------------------------------------------------
     #  "FileImportPage" interface:
@@ -59,8 +55,8 @@ class FileImportPage(WizardPage):
 
     @cached_property
     def _get__label(self):
-        """ Property getter """
-
+        """ Property getter.
+        """
         if not exists(self.data_file):
             l = "Select a %s file." % self.file_type
             self.complete = False
@@ -75,8 +71,8 @@ class FileImportPage(WizardPage):
     #--------------------------------------------------------------------------
 
     def create_page(self, parent):
-        """ Create the wizard page. """
-
+        """ Create the wizard page.
+        """
         ui = self.edit_traits(parent=parent, kind="subpanel")
 
         return ui.control

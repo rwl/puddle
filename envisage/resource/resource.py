@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines subclasses of File for use as resources """
+""" Defines subclasses of File for use as resources.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -45,23 +46,19 @@ logger = logging.getLogger(__name__)
 
 class File(IOFile):
     """ Files are leaf resources which contain data. The contents of a file
-    resource is stored as a file in the local file system.
-
+        resource is stored as a file in the local file system.
     """
 
     implements(IWorkspace)
 
 #    parent = Instance(Folder, allow_none=False)
 
-    traits_view = View(
-        Item(name="name")
-    )
+    traits_view = View(Item(name="name"))
 
     def create_file(self, contents=''):
-        """ Creates a file at this path """
-
+        """ Creates a file at this path.
+        """
         super(File, self).create_file(contents)
-
 #        self.parent.add_file(self)
 
 #------------------------------------------------------------------------------
@@ -70,26 +67,20 @@ class File(IOFile):
 
 class Folder(IOFile):
     """ May contain files and/or other folders. A folder resource is stored
-    as a directory in the local file system.
-
+        as a directory in the local file system.
     """
 
 #    parent = Instance(This, allow_none=False)
 
     _children = List(Instance(IOFile))
 
-    traits_view = View(
-        Item(name="name")
-    )
+    traits_view = View(Item(name="name"))
 
 
     def _get_children(self):
-        """ Returns the folder's children.
-
-        Returns None if the path does not exist or is not a folder.
-
+        """ Returns the folder's children. Returns None if the path does
+            not exist or is not a folder.
         """
-
         child_names = [f.name+f.ext for f in self._children]
 
         if self.is_folder:
@@ -116,8 +107,8 @@ class Folder(IOFile):
     #--------------------------------------------------------------------------
 
     def get_folder(self, name):
-        """ Returns a folder resource """
-
+        """ Returns a folder resource.
+        """
         for child in self.children:
             if child.is_folder:
                 if child.name == name:
@@ -130,8 +121,8 @@ class Folder(IOFile):
 
 
     def get_file(self, name):
-        """ Returns a file resource """
-
+        """ Returns a file resource.
+        """
         for child in self.children:
             if child.is_file:
                 if (child.name+child.ext) == name:
@@ -144,8 +135,8 @@ class Folder(IOFile):
 
 
     def add_file(self, file):
-        """ Adds a file or a folder """
-
+        """ Adds a file or a folder.
+        """
         self._children.append(file)
 
 #------------------------------------------------------------------------------
@@ -208,17 +199,15 @@ class Project(Folder):
     #--------------------------------------------------------------------------
 
     def _get_is_project(self):
-        """ Returns True if the path exists and it contains a .project
-        file
-
+        """ Returns True if the path exists and it contains a
+            .project file
         """
-
         return self.is_folder and ".project" in listdir(self.path)
 
 
     def create_project(self):
-        """ Creates a project at this path """
-
+        """ Creates a project at this path.
+        """
         if self.exists:
             raise ValueError("project <%s> already exists" % self.path)
 
@@ -262,12 +251,9 @@ class Workspace(IOFile):
     #--------------------------------------------------------------------------
 
     def _get_children(self):
-        """ Returns the folder's children.
-
-        Returns None if the path does not exist or is not a folder.
-
+        """ Returns the folder's children. Returns None if the path does
+            not exist or is not a folder.
         """
-
         project_names = [p.name+p.ext for p in self._children]
 
         if self.is_folder:
@@ -290,20 +276,20 @@ class Workspace(IOFile):
 
 
     def _get_parent(self):
-        """ Returns the parent of this file/folder. """
-
+        """ Returns the parent of this file/folder.
+        """
         return Workspace(dirname(self.path))
 
 
     def create_workspace(self):
-        """ Creates a workspace at this path """
-
+        """ Creates a workspace at this path.
+        """
         self.create_folder()
 
 
     def delete(self):
-        """ Deletes this file/folder """
-
+        """ Deletes this file/folder.
+        """
         logger.info("Workspace may not be deleted")
 
     #--------------------------------------------------------------------------
@@ -311,8 +297,8 @@ class Workspace(IOFile):
     #--------------------------------------------------------------------------
 
     def get_project(self, name):
-        """ Returns a project resource """
-
+        """ Returns a project resource.
+        """
         for project in self._children:
             if (project.name+project.ext) == name:
                 return project
@@ -328,16 +314,15 @@ class Workspace(IOFile):
 
 
     def add_project(self, project):
-        """ Adds a project resource to the workspace """
-
+        """ Adds a project resource to the workspace.
+        """
         self._children.append(project)
 
 
     def get_folder(self, path):
-        """ Returns a folder resource """
-
+        """ Returns a folder resource.
+        """
         folder = Folder(path)
-
         return folder
 
 # EOF -------------------------------------------------------------------------

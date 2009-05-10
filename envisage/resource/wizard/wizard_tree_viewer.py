@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines a workspace tree viewer """
+""" Defines a workspace tree viewer.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -31,21 +32,22 @@ from enthought.pyface.viewer.api import \
 #------------------------------------------------------------------------------
 
 class WizardTreeContentProvider(TreeContentProvider):
-    """ Defines a wizard tree content provider """
+    """ Defines a wizard tree content provider.
+    """
 
     #--------------------------------------------------------------------------
     #  "TreeContentProvider" interface.
     #--------------------------------------------------------------------------
 
     def get_parent(self, element):
-        """ Returns the parent of an element. """
-
+        """ Returns the parent of an element.
+        """
         return None
 
 
     def get_children(self, element):
-        """ Returns the children of an element. """
-
+        """ Returns the children of an element.
+        """
         if hasattr(element, "wizards"):
             return element.wizards
         else:
@@ -53,8 +55,8 @@ class WizardTreeContentProvider(TreeContentProvider):
 
 
     def has_children(self, element):
-        """ Returns True iff the element has children, otherwise False. """
-
+        """ Returns True if the element has children, otherwise False.
+        """
         if hasattr(element, "wizards"):
             return bool(element.wizards)
         else:
@@ -65,15 +67,16 @@ class WizardTreeContentProvider(TreeContentProvider):
 #------------------------------------------------------------------------------
 
 class WizardTreeLabelProvider(TreeLabelProvider):
-    """ Defines a workspace tree label provider """
+    """ Defines a workspace tree label provider.
+    """
 
     #--------------------------------------------------------------------------
     #  "TreeLabelProvider" interface
     #--------------------------------------------------------------------------
 
     def get_image(self, viewer, element):
-        """ Returns the filename of the label image for an element. """
-
+        """ Returns the filename of the label image for an element.
+        """
         if hasattr(element, "image"):
             return element.image
         else:
@@ -81,8 +84,8 @@ class WizardTreeLabelProvider(TreeLabelProvider):
 
 
     def get_text(self, viewer, element):
-        """ Returns the label text for an element. """
-
+        """ Returns the label text for an element.
+        """
         return element.name
 
 #------------------------------------------------------------------------------
@@ -90,7 +93,8 @@ class WizardTreeLabelProvider(TreeLabelProvider):
 #------------------------------------------------------------------------------
 
 class WizardTreeViewer(TreeViewer):
-    """ A tree viewer for a list of wizards """
+    """ A tree viewer for a list of wizards.
+    """
 
     #--------------------------------------------------------------------------
     #  "TreeViewer" interface
@@ -110,12 +114,13 @@ class WizardTreeViewer(TreeViewer):
     show_root = True
 
     def _delete_children(self, pid):
-        """ Recursively deletes the children of the specified element. """
-
+        """ Recursively deletes the children of the specified element.
+        """
         cookie = 0
 
 #        (cid, cookie) = self.control.GetFirstChild(pid, cookie) # Obsolete
         (cid, cookie) = self.control.GetFirstChild(pid)
+
         while cid.IsOk():
             # Recursively delete the child's children.
             self._delete_children(cid)

@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines an action for viewing resource properties """
+""" Defines an action for viewing resource properties.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -31,7 +32,8 @@ from enthought.pyface.action.api import Action
 #------------------------------------------------------------------------------
 
 class PropertiesAction(Action):
-    """ Defines an action for viewing resource properties """
+    """ Defines an action for viewing resource properties.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -48,22 +50,22 @@ class PropertiesAction(Action):
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Perform the action """
-
+        """ Perform the action.
+        """
         selections = self.window.selection
 
         if selections:
             selection = selections[0]
+
             if isinstance(selection, File):
-                selection.edit_traits(
-                    parent=self.window.control,
+                selection.edit_traits( parent=self.window.control,
                     view=self._create_resource_view(selection),
-                    kind="livemodal"
-                )
+                    kind="livemodal" )
+
 
     def _create_resource_view(self, selection):
-        """ Creates a resource view """
-
+        """ Creates a resource view.
+        """
         resource_view = View(
             Item(name="absolute_path", style="readonly"),
             # FIXME: Readonly boolean editor is just blank
@@ -75,8 +77,7 @@ class PropertiesAction(Action):
             Item(name="mime_type", style="readonly"),
             Item(name="url", style="readonly"),
             title="Properties for %s" % selection.name+selection.ext,
-            icon=self.window.application.icon
-        )
+            icon=self.window.application.icon)
 
         return resource_view
 

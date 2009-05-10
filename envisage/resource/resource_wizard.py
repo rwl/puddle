@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines classes for creating a new resource with a wizard """
+""" Defines classes for creating a new resource with a wizard.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -52,7 +53,8 @@ RESOURCE_VIEW = "envisage.resource.resource_view"
 #------------------------------------------------------------------------------
 
 class ResourceWizardPage(WizardPage):
-    """ Wizard page for resource creation """
+    """ Wizard page for resource creation.
+    """
 
     #--------------------------------------------------------------------------
     #  ResourceWizardPage interface:
@@ -67,34 +69,31 @@ class ResourceWizardPage(WizardPage):
     abs_path = Property(Str, depends_on=["resource_name"])
 
     # A label with advice
-    _label = Property(
-        Str("Create a new resource."), depends_on=["resource_name"]
-    )
+    _label = Property(Str("Create a new resource."),
+        depends_on=["resource_name"])
 
     # Has the folder's name been changed
     _named = Bool(False)
 
     # The default view
     traits_view = View(
-        Group(
-            Heading("Resource"),
+        Group(Heading("Resource"),
             Item("_label", style="readonly", show_label=False),
-            "_",
-        ),
-        Item("resource_name", label="Name")
-    )
+            "_"),
+        Item("resource_name", label="Name"))
+
 
     @cached_property
     def _get_abs_path(self):
-        """ Property getter """
-
+        """ Property getter.
+        """
         return join(self.csp.directory, self.resource_name)
 
 
     @cached_property
     def _get__label(self):
-        """ Property getter """
-
+        """ Property getter.
+        """
         if (exists(self.abs_path)) and (len(self.resource_name) != 0):
             l = "A resource with that name already exists."
             self.complete = False
@@ -107,13 +106,12 @@ class ResourceWizardPage(WizardPage):
         else:
             l = "Create a new resource."
             self.complete = True
-
         return l
 
 
     def _resource_name_changed(self):
-        """ Sets a flag when the name is changed """
-
+        """ Sets a flag when the name is changed.
+        """
         self._named = True
 
     #--------------------------------------------------------------------------
@@ -121,8 +119,8 @@ class ResourceWizardPage(WizardPage):
     #--------------------------------------------------------------------------
 
     def create_page(self, parent):
-        """ Create the wizard page. """
-
+        """ Create the wizard page.
+        """
         ui = self.edit_traits(parent=parent, kind='subpanel')
 
         return ui.control
@@ -133,9 +131,8 @@ class ResourceWizardPage(WizardPage):
 
 class BaseResourceWizard(SimpleWizard):
     """ A base wizard for resource creation.  This will just create a file
-    at the location specified in the wizard pages.  Override the
-    _finished_fired() method in a subclass for other resource types.
-
+        at the location specified in the wizard pages.  Override the
+        _finished_fired() method in a subclass for other resource types.
     """
 
     # The dialog title
@@ -154,19 +151,17 @@ class BaseResourceWizard(SimpleWizard):
     #--------------------------------------------------------------------------
 
     def __init__(self, window, **traits):
-        """ Returns a BaseResourceWizard """
-
+        """ Returns a BaseResourceWizard.
+        """
         self.window = window
 
         workspace = window.application.get_service(IWorkspace)
 
-        container_page = ContainerSelectionPage(
-            id="container_page", workspace=workspace
-        )
+        container_page = ContainerSelectionPage(id="container_page",
+            workspace=workspace)
 
-        resource_page = ResourceWizardPage(
-            id="resource_page", csp=container_page
-        )
+        resource_page = ResourceWizardPage(id="resource_page",
+            csp=container_page)
 
         self.pages = [container_page, resource_page]
 
@@ -178,11 +173,9 @@ class BaseResourceWizard(SimpleWizard):
 
     def _finished_fired(self):
         """ This will just create a file at the location specified in the
-        wizard pages.  Override this method in a subclass for other resource
-        types.
-
+            wizard pages.  Override this method in a subclass for other
+            resource types.
         """
-
         container_page = self.pages[0]
         resource_page = self.pages[1]
 
@@ -196,15 +189,15 @@ class BaseResourceWizard(SimpleWizard):
 
 
     def _open_resource(self, resource):
-        """ Makes the file the current selection and opens it """
-
+        """ Makes the file the current selection and opens it.
+        """
         self.window.selection = [resource]
         OpenAction(window=self.window).perform(event=None)
 
 
     def _refresh_container(self, container):
-        """ Refreshes the resource tree view """
-
+        """ Refreshes the resource tree view.
+        """
         view = self.window.get_view_by_id(RESOURCE_VIEW)
         if view is not None:
             view.tree_viewer.refresh(container)

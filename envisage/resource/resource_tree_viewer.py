@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines a resource tree viewer """
+""" Defines a resource tree viewer.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -58,12 +59,10 @@ class HideHiddenFiles(ViewerFilter):
     def select(self, viewer, parent, element):
         """ Returns True if the element is 'allowed' (ie. NOT filtered).
 
-        'viewer'  is the viewer that we are filtering elements for.
-        'parent'  is the parent element.
-        'element' is the element to select.
-
+            'viewer'  is the viewer that we are filtering elements for.
+            'parent'  is the parent element.
+            'element' is the element to select.
         """
-
         return basename(element.absolute_path)[0] is not "."
 
 #------------------------------------------------------------------------------
@@ -71,20 +70,19 @@ class HideHiddenFiles(ViewerFilter):
 #------------------------------------------------------------------------------
 
 class FileSorter(ViewerSorter):
-    """ A sorter that arranges folders before files. """
+    """ A sorter that arranges folders before files.
+    """
 
     def category(self, viewer, parent, element):
         """ Returns the category (an integer) for an element.
 
-        'parent'   is the parent element.
-        'elements' is the element to return the category for.
+            'parent'   is the parent element.
+            'elements' is the element to return the category for.
 
-        Categories are used to sort elements into bins.  The bins are
-        arranged in ascending numeric order.  The elements within a bin
-        are arranged as dictated by the sorter's 'compare' method.
-
+            Categories are used to sort elements into bins.  The bins are
+            arranged in ascending numeric order.  The elements within a bin
+            are arranged as dictated by the sorter's 'compare' method.
         """
-
         if element.is_folder:
             category = 0
         else:
@@ -97,21 +95,22 @@ class FileSorter(ViewerSorter):
 #------------------------------------------------------------------------------
 
 class ResourceTreeContentProvider(TreeContentProvider):
-    """ Defines a resource tree content provider """
+    """ Defines a resource tree content provider.
+    """
 
     #--------------------------------------------------------------------------
     #  "TreeContentProvider" interface.
     #--------------------------------------------------------------------------
 
     def get_parent(self, element):
-        """ Returns the parent of an element. """
-
+        """ Returns the parent of an element.
+        """
         return dirname(element.absolute_path)
 
 
     def get_children(self, element):
-        """ Returns the children of an element. """
-
+        """ Returns the children of an element.
+        """
 #        visible = [c for c in element.children
 #                 if (basename(c.path)[0] is not ".") and (c.exists)]
 #
@@ -121,8 +120,8 @@ class ResourceTreeContentProvider(TreeContentProvider):
 
 
     def has_children(self, element):
-        """ Returns True iff the element has children, otherwise False. """
-
+        """ Returns True if the element has children, otherwise False.
+        """
 #        if element.is_folder:
 #            visible = [c for c in element.children
 #                     if (basename(c.path)[0] is not ".") and (c.exists)]
@@ -139,6 +138,7 @@ class ResourceTreeContentProvider(TreeContentProvider):
                 os.listdir(element.absolute_path)
                 return bool(element.children)
             except OSError:
+                # Handles directories without read access.
                 return False
         else:
             return False
@@ -148,7 +148,8 @@ class ResourceTreeContentProvider(TreeContentProvider):
 #------------------------------------------------------------------------------
 
 class ResourceTreeLabelProvider(TreeLabelProvider):
-    """ Defines a resource tree label provider """
+    """ Defines a resource tree label provider.
+    """
 
     # The image used to represent folders that are NOT expanded.
     CLOSED_FOLDER = ImageResource('closed_folder')
@@ -174,8 +175,8 @@ class ResourceTreeLabelProvider(TreeLabelProvider):
     #--------------------------------------------------------------------------
 
     def get_image(self, viewer, element):
-        """ Returns the filename of the label image for an element. """
-
+        """ Returns the filename of the label image for an element.
+        """
         selected = viewer.is_selected(element)
         expanded = viewer.is_expanded(element)
 
@@ -197,17 +198,17 @@ class ResourceTreeLabelProvider(TreeLabelProvider):
 
 
     def get_text(self, viewer, element):
-        """ Returns the label text for an element. """
-
-        return element.name+element.ext
+        """ Returns the label text for an element.
+        """
+        return element.name + element.ext
 
     #--------------------------------------------------------------------------
     #  "ResourceTreeLabelProvider" interface
     #--------------------------------------------------------------------------
 
     def _editors_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         if self.window is not None:
             editors = self.window.application.get_extensions(EDITORS)
             return [factory() for factory in editors]
@@ -219,7 +220,8 @@ class ResourceTreeLabelProvider(TreeLabelProvider):
 #------------------------------------------------------------------------------
 
 class ResourceTreeViewer(TreeViewer):
-    """ A tree viewer for local file systems. """
+    """ A tree viewer for local file systems.
+    """
 
     #--------------------------------------------------------------------------
     #  "TreeViewer" interface
@@ -242,10 +244,8 @@ class ResourceTreeViewer(TreeViewer):
     def refresh(self, element):#=None):
         """ Refresh the tree starting from the specified element.
 
-        Call this when the STRUCTURE of the content has changed.
-
+            Call this when the STRUCTURE of the content has changed.
         """
-
         # Refresh from the root if no element specified
 #        if element is None:
 #            pid = self.control.GetRootItem()
@@ -285,8 +285,8 @@ class ResourceTreeViewer(TreeViewer):
 
 
     def _delete_children(self, pid):
-        """ Recursively deletes the children of the specified element. """
-
+        """ Recursively deletes the children of the specified element.
+        """
         cookie = 0
 
 #        (cid, cookie) = self.control.GetFirstChild(pid, cookie) # Obsolete
@@ -312,8 +312,8 @@ class ResourceTreeViewer(TreeViewer):
     #--------------------------------------------------------------------------
 
     def _element_right_clicked_changed(self, event):
-        """ Forces selection of the item under the cursor on right click """
-
+        """ Forces selection of the item under the cursor on right click.
+        """
         element, point = event
 
         wx_item, flags = self.control.HitTest(point)
@@ -334,31 +334,29 @@ if __name__ == "__main__":
             # Add a tool bar.
             self.tool_bar_manager = ToolBarManager(
                 Action(name="Refresh", on_perform=self.refresh_tree),
-                Action(name="Update", on_perform=self.update_tree)
-            )
+                Action(name="Update", on_perform=self.update_tree))
 
             return
 
         def _create_contents(self, parent):
-            """ Creates the window contents. """
-
+            """ Creates the window contents.
+            """
             self.tree_viewer = tree_viewer = ResourceTreeViewer(
                 parent, input=File(expanduser("~")),
-                sorter=FileSorter()
-            )
+                sorter=FileSorter())
 
             return tree_viewer.control
 
         def refresh_tree(self):
-            """ Refreshes the tree viewer """
-
+            """ Refreshes the tree viewer.
+            """
             if self.tree_viewer.selection:
                 selected = self.tree_viewer.selection[0]
                 self.tree_viewer.refresh(selected)
 
         def update_tree(self):
-            """ Updates the tree viewer """
-
+            """ Updates the tree viewer.
+            """
             if self.tree_viewer.selection:
                 selected = self.tree_viewer.selection[0]
                 self.tree_viewer.update(selected)

@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Extended Workbench plug-in actions """
+""" Extended Workbench plug-in actions.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -44,9 +45,8 @@ NEW_WIZARDS = "envisage.resource.new_wizards"
 #------------------------------------------------------------------------------
 
 class NewResourceAction(Action):
-    """ Defines an action that opens the new resource creation wizard """
-
-#    wizard = Instance(ChainedWizard)
+    """ Defines an action that opens the new resource creation wizard.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -72,28 +72,21 @@ class NewResourceAction(Action):
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Performs the action """
-
+        """ Performs the action.
+        """
         # Get all contributed new resource wizards
         contrib = self.window.application.get_extensions(NEW_WIZARDS)
         # Instantiate the contributed classes
         wizards = [wizard() for wizard in contrib]
 
         # Create the wizard...
-        wizard = WizardSelectionWizard(
-            parent=self.window.control, window=self.window,
-            wizards=wizards, title="New"
-        )
+        wizard = WizardSelectionWizard(parent=self.window.control,
+            window=self.window, wizards=wizards, title="New")
 
         # ...open the wizard.
         if wizard.open() == OK:
             wizard.next_wizard.finished = True
 
         return
-
-#    @on_trait_change("wizard.controller.complete")
-#    def _wizard_complete(self, new):
-#
-#        print "WIZARD SELECTION WIZARD COMPLETE:", new
 
 # EOF -------------------------------------------------------------------------

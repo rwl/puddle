@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -44,7 +44,8 @@ WORKSPACE_VIEW = "envisage.resource.resource_view"
 #------------------------------------------------------------------------------
 
 class LocationAction(Action):
-    """ An action for moving the workspace to a new location """
+    """ An action for moving the workspace to a new location.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -65,9 +66,6 @@ class LocationAction(Action):
     # Keyboard accelerator:
     accelerator = "Ctrl+L"
 
-    # The action's image (displayed on tool bar tools etc):
-#    image = ImageResource("home_folder", search_path=[IMAGE_LOCATION])
-
     #--------------------------------------------------------------------------
     #  "LocationAction" interface:
     #--------------------------------------------------------------------------
@@ -79,8 +77,8 @@ class LocationAction(Action):
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Perform the action """
-
+        """ Perform the action.
+        """
         # Note that we always offer the service via its name, but look it up
         # via the actual protocol.
         from envisage.resource.i_workspace import IWorkspace

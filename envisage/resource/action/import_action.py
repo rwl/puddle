@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Extended Workbench plug-in actions """
+""" Imprort resource action.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -42,7 +43,8 @@ IMPORT_WIZARDS = "envisage.resource.import_wizards"
 #------------------------------------------------------------------------------
 
 class ImportAction(Action):
-    """ Defines an action that opens the import wizard selection wizard """
+    """ Defines an action that opens the import wizard selection wizard.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -65,18 +67,16 @@ class ImportAction(Action):
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Performs the action """
-
+        """ Performs the action.
+        """
         # Get all contributed import wizards
         contrib = self.window.application.get_extensions(IMPORT_WIZARDS)
         # Instantiate the contributed classes
         wizards = [wizard() for wizard in contrib]
 
         # Create the wizard...
-        wizard = WizardSelectionWizard(
-            parent=self.window.control, window=self.window,
-            wizards=wizards, title="Import"
-        )
+        wizard = WizardSelectionWizard( parent=self.window.control,
+            window=self.window, wizards=wizards, title="Import" )
 
         # ...open the wizard.
         if wizard.open() == OK:

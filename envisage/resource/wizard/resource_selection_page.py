@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines a wizard page for resource selection """
+""" Defines a wizard page for resource selection.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -34,7 +35,8 @@ from envisage.resource.resource_tree_viewer import ResourceTreeViewer
 #------------------------------------------------------------------------------
 
 class ResourceSelectionPage(WizardPage):
-    """ Wizard page for resource selection """
+    """ Wizard page for resource selection.
+    """
 
     #--------------------------------------------------------------------------
     #  "WizardPage" interface:
@@ -61,8 +63,7 @@ class ResourceSelectionPage(WizardPage):
 
         tree_viewer = ResourceTreeViewer(
             parent=parent, input=self.workspace,
-            selection_mode="single", show_root=False
-        )
+            selection_mode="single", show_root=False)
 
         tree_viewer.on_trait_change(self.on_selection_change, "selection")
 
@@ -73,10 +74,11 @@ class ResourceSelectionPage(WizardPage):
     #--------------------------------------------------------------------------
 
     def on_selection_change(self, selections):
-        """ Handles the tree viewer selections changing """
-
+        """ Handles the tree viewer selections changing.
+        """
         if selections:
             selection = selections[0]
+
             if isinstance(selection, File):
                 self.resource = selection
                 self.complete = True

@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines a wizard for project creation """
+""" Defines a wizard for project creation.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -47,7 +48,8 @@ WORKSPACE_VIEW = "envisage.resource.resource_view"
 #------------------------------------------------------------------------------
 
 class ProjectWizardPage(WizardPage):
-    """ Wizard page for project creation """
+    """ Wizard page for project creation.
+    """
 
     #--------------------------------------------------------------------------
     #  ProjectWizardPage interface:
@@ -66,10 +68,8 @@ class ProjectWizardPage(WizardPage):
     use_default = Bool(True)
 
     # A label with advice
-    _label = Property(
-        Str("Create a new project resource."),
-        depends_on=["project_name", "location"]
-    )
+    _label = Property(Str("Create a new project resource."),
+        depends_on=["project_name", "location"])
 
     # Has the project name been changed
     _named = Bool(False)
@@ -94,8 +94,8 @@ class ProjectWizardPage(WizardPage):
     #--------------------------------------------------------------------------
 
     def create_page(self, parent):
-        """ Create the wizard page. """
-
+        """ Create the wizard page.
+        """
         ui = self.edit_traits(parent=parent, kind='subpanel')
 
         return ui.control
@@ -106,15 +106,15 @@ class ProjectWizardPage(WizardPage):
 
     @cached_property
     def _get_abs_path(self):
-        """ Property getter """
-
+        """ Property getter.
+        """
         return join(self.location, self.project_name)
 
 
     @cached_property
     def _get__label(self):
-        """ Property getter """
-
+        """ Property getter.
+        """
         if (exists(self.abs_path)) and (len(self.project_name) != 0):
             l = "A project with that name already exists."
             self.complete = False
@@ -138,26 +138,17 @@ class ProjectWizardPage(WizardPage):
 
 
     def _project_name_changed(self):
-        """ Sets a flag when the name is changed """
-
+        """ Sets a flag when the name is changed.
+        """
         self._named = True
-
-#------------------------------------------------------------------------------
-#  "ProjectWizardController" class:
-#------------------------------------------------------------------------------
-
-#class ProjectWizardController(SimpleWizardController):
-#
-#    def _complete_changed(self, new):
-#
-#        "PROJECT COMPLETE!", new
 
 #------------------------------------------------------------------------------
 #  "ProjectWizard" class:
 #------------------------------------------------------------------------------
 
 class ProjectWizard(SimpleWizard):
-    """ A wizard for project creation """
+    """ A wizard for project creation.
+    """
 
     # The dialog title
     title = Str("New Project")
@@ -177,8 +168,8 @@ class ProjectWizard(SimpleWizard):
     #--------------------------------------------------------------------------
 
     def __init__(self, window, **traits):
-        """ Returns a ProjectWizard """
-
+        """ Returns a ProjectWizard.
+        """
         self.window = window
 
         workspace = window.application.get_service(IWorkspace)
@@ -194,11 +185,9 @@ class ProjectWizard(SimpleWizard):
 
     def _finished_fired(self):
         """ Performs the project resource creation if the wizard is
-        finished successfully.
-
+            finished successfully.
         """
 #        try:
-
         workspace = self.window.application.get_service(IWorkspace)
 
         pwp = self.pages[0]
@@ -229,7 +218,6 @@ class ProjectWizard(SimpleWizard):
 #------------------------------------------------------------------------------
 
 if __name__ == "__main__":
-
     from enthought.pyface.api import GUI
 
     # Create the GUI.

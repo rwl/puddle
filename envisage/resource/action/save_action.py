@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines an action for saving the contents of the current editor """
+""" Defines an action for saving the contents of the current editor.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -39,7 +40,8 @@ IMAGE_LOCATION = join(dirname(__file__), "..", "images")
 #------------------------------------------------------------------------------
 
 class SaveAction(Action):
-    """ Defines an action that save the contents of the current editor """
+    """ Defines an action that save the contents of the current editor.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -75,8 +77,7 @@ class SaveAction(Action):
 
     def _active_editor_changed_for_window(self, obj, name, old, new):
         """ Sets up static event handlers for change in the clean state
-        of the active editor
-
+            of the active editor
         """
 
         if old is not None:
@@ -86,40 +87,10 @@ class SaveAction(Action):
             new.on_trait_change(self.active_editor_dirt, "dirty")
             self.active_editor_dirt(dirty=new.dirty)
 
-    #--------------------------------------------------------------------------
-    #  "object" interface:
-    #--------------------------------------------------------------------------
-
-#    def __init__(self, **traits):
-#        """ Returns a new SaveAction """
-#        super(SaveAction, self).__init__(**traits)
-#
-#        if traits.has_key("window"):
-#            traits["window"].on_trait_change(
-#                self.on_editor_change, "active_editor"
-#            )
-
-    #--------------------------------------------------------------------------
-    #  "SaveAction" interface:
-    #--------------------------------------------------------------------------
-
-#    def on_editor_change(self, obj, name, old, new):
-#        """ Sets up static event handlers for change in the clean state
-#        of the active editor
-#
-#        """
-#
-#        if old is not None:
-#            old.on_trait_change(self.active_editor_dirt, "dirty", remove=True)
-#
-#        if new is not None:
-#            new.on_trait_change(self.active_editor_dirt, "dirty")
-#            self.active_editor_dirt(dirty=new.dirty)
-
 
     def active_editor_dirt(self, dirty):
-        """ Enables the action if the active editor is dirty """
-
+        """ Enables the action if the active editor is dirty.
+        """
         if dirty:
             self.enabled = True
         else:
@@ -130,9 +101,10 @@ class SaveAction(Action):
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Performs the action """
-
+        """ Performs the action.
+        """
         active_editor = self.window.active_editor
+
         if self.enabled and (active_editor is not None):
             active_editor.save()
 

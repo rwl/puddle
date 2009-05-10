@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines an action for copying resources """
+""" Defines an action for copying resources.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -45,7 +46,8 @@ WORKSPACE_VIEW = "envisage.resource.resource_view"
 #------------------------------------------------------------------------------
 
 class CopyAction(Action):
-    """ Defines an action for copying resources """
+    """ Defines an action for copying resources.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -77,22 +79,22 @@ class CopyAction(Action):
     #--------------------------------------------------------------------------
 
     def _selection_changed_for_window(self, selections):
-        """ Enables the action if the window has editors """
-
+        """ Enables the action if the window has editors.
+        """
         self.enabled = self._is_enabled(selections)
 
 
     def _enabled_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         selections = self.window.selection
 
         return self._is_enabled(selections)
 
 
     def _is_enabled(self, selections):
-        """ Returns true if the action should be enabled """
-
+        """ Returns true if the action should be enabled.
+        """
         if selections and isinstance(selections[0], File):
             return True
         else:
@@ -103,8 +105,8 @@ class CopyAction(Action):
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Perform the action """
-
+        """ Perform the action.
+        """
         selection = self.window.selection[0]
 
         ds = DirectorySelection(directory=dirname(selection.absolute_path))

@@ -58,7 +58,7 @@ class PythonEditorActionSet(WorkbenchActionSet):
             groups=["RunGroup", "IPythonShellGroup"]
         ),
         Menu(
-            name="&Run As", path="Workspace", group="SubMenuGroup",
+            name="&Run As", path="Resource", group="SubMenuGroup",
             groups=["RoutineGroup"]
         )
     ]
@@ -86,7 +86,7 @@ class PythonEditorActionSet(WorkbenchActionSet):
             "PythonRunAction"
         ),
         Action(
-            path="Workspace/Run As", group="RoutineGroup",
+            path="Resource/Run As", group="RoutineGroup",
             class_name="envisage.python_editor.python_run_action:"
             "PythonRunAction"
         )

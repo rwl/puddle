@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" The 'Open With' menu """
+""" The 'Open With' menu.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -43,7 +44,8 @@ EDITORS = "envisage.resource.editors"
 #------------------------------------------------------------------------------
 
 class OpenWithMenuManager(MenuManager):
-    """ The 'Open With' menu """
+    """ The 'Open With' menu.
+    """
 
     #--------------------------------------------------------------------------
     #  "ActionManager" interface
@@ -75,17 +77,15 @@ class OpenWithMenuManager(MenuManager):
     #--------------------------------------------------------------------------
 
     def _groups_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         app = self.window.application
         editors = [factory() for factory in app.get_extensions(EDITORS)]
 
         editors_group = Group(id="editors")
 
         for editor in editors:
-            action = OpenWithAction(
-                editor=editor, window=self.window
-            )
+            action = OpenWithAction(editor=editor, window=self.window)
             editors_group.append(action)
 
         return [editors_group]

@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines an action for closing the current editor """
+""" Defines an action for closing the current editor.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -39,7 +40,8 @@ IMAGE_LOCATION = join( dirname(__file__), "..", "images" )
 #------------------------------------------------------------------------------
 
 class CloseAction(Action):
-    """ An action for closing the current editor """
+    """ An action for closing the current editor.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -67,25 +69,12 @@ class CloseAction(Action):
     window = Instance(WorkbenchWindow)
 
     #--------------------------------------------------------------------------
-    #  "object" interface:
-    #--------------------------------------------------------------------------
-
-#    def __init__(self, **traits):
-#        """ Returns a new CloseAction """
-#        super(CloseAction, self).__init__(**traits)
-#
-#        if traits.has_key("window"):
-#            traits["window"].on_trait_change(
-#                self.on_editors_change, "editors_items"
-#            )
-
-    #--------------------------------------------------------------------------
     #  "CloseAction" interface:
     #--------------------------------------------------------------------------
 
     def _selection_changed_for_window(self, event):
-        """ Enables the action if the window has editors """
-
+        """ Enables the action if the window has editors.
+        """
         if self.window.editors:
             self.enabled = True
         else:
@@ -96,8 +85,8 @@ class CloseAction(Action):
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Perform the action """
-
+        """ Perform the action.
+        """
         editor = self.window.active_editor
 
         if editor is not None:

@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,13 +15,14 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines an action for closing all editors """
+""" Defines an action for closing all editors.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
 #------------------------------------------------------------------------------
 
-from os.path import dirname
+from os.path import dirname, join
 
 from enthought.traits.api import Bool
 from enthought.pyface.api import ImageResource
@@ -33,14 +34,15 @@ import envisage.resource.api
 #  Constants:
 #------------------------------------------------------------------------------
 
-IMAGE_LOCATION = dirname( envisage.resource.api.__file__ )
+IMAGE_LOCATION = join( dirname(__file__), "..", "images" )
 
 #------------------------------------------------------------------------------
 #  "CloseAllAction" class:
 #------------------------------------------------------------------------------
 
 class CloseAllAction(Action):
-    """ An action for closing all editors """
+    """ An action for closing all editors.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -66,21 +68,21 @@ class CloseAllAction(Action):
     #--------------------------------------------------------------------------
 
     def __init__(self, **traits):
-        """ Returns a new CloseAllAction """
+        """ Returns a new CloseAllAction.
+        """
         super(CloseAllAction, self).__init__(**traits)
 
         if traits.has_key("window"):
             traits["window"].on_trait_change(
-                self.on_editors_change, "editors_items"
-            )
+                self.on_editors_change, "editors_items")
 
     #--------------------------------------------------------------------------
     #  "CloseAllAction" interface:
     #--------------------------------------------------------------------------
 
     def on_editors_change(self, event):
-        """ Enables the action if the window has editors """
-
+        """ Enables the action if the window has editors.
+        """
         if self.window.editors:
             self.enabled = True
         else:
@@ -91,8 +93,8 @@ class CloseAllAction(Action):
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Perform the action. """
-
+        """ Perform the action.
+        """
         editors = self.window.editors[:]
 
         for editor in editors:

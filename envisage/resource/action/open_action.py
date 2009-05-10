@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Workspace plug-in actions """
+""" Workspace plug-in actions.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -43,7 +44,8 @@ EDITORS = "envisage.resource.editors"
 #------------------------------------------------------------------------------
 
 class OpenAction(Action):
-    """ Defines an action that open the current resource """
+    """ Defines an action that open the current resource.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -75,8 +77,8 @@ class OpenAction(Action):
     #--------------------------------------------------------------------------
 
     def _selection_changed_for_window(self, selections):
-        """ Makes the action visible if a File is selected """
-
+        """ Makes the action visible if a File is selected.
+        """
         if selections:
             selection = selections[0]
             # Enable the action if a valid editor has been contributed
@@ -94,12 +96,13 @@ class OpenAction(Action):
     #--------------------------------------------------------------------------
 
     def _enabled_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         sel = self.window.selection
 
         editors = self.window.application.get_extensions(EDITORS)
         exts = [ext for factory in editors for ext in factory().extensions]
+
         if sel and isinstance(sel[0], File) and (sel[0].ext in exts):
             return True
         else:
@@ -107,12 +110,13 @@ class OpenAction(Action):
 
 
     def _visible_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         sel = self.window.selection
 
         editors = self.window.application.get_extensions(EDITORS)
         exts = [ext for factory in editors for ext in factory().extensions]
+
         if sel and isinstance(sel[0], File) and (sel[0].ext in exts):
             return True
         else:
@@ -120,8 +124,8 @@ class OpenAction(Action):
 
 
     def perform(self, event):
-        """ Performs the action """
-
+        """ Performs the action.
+        """
         app = self.window.application
         editors = [factory() for factory in app.get_extensions(EDITORS)]
 
@@ -129,10 +133,11 @@ class OpenAction(Action):
         if selections:
             # Use the first of the selected objects
             selection = selections[0]
+
             if isinstance(selection, File):
                 valid_editors = [
-                    e for e in editors if selection.ext in e.extensions
-                ]
+                    e for e in editors if selection.ext in e.extensions]
+
                 if valid_editors:
                     for editor in valid_editors:
                         if editor.default:

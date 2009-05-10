@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Wizard selection wizard page """
+""" Wizard selection wizard page.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -45,7 +46,8 @@ IMAGE_LOCATION = join(dirname(__file__), "..", "images")
 #------------------------------------------------------------------------------
 
 class WizardSelectionPage(WizardPage):
-    """ Wizard page for element creation wizard selection """
+    """ Wizard page for element creation wizard selection.
+    """
 
     # The selection of wizards from which to choose
     wizards = List(Instance(WizardExtension))
@@ -78,19 +80,9 @@ class WizardSelectionPage(WizardPage):
     #  "WizardSelectionWizardPage" interface:
     #--------------------------------------------------------------------------
 
-#    def _wizard_default(self):
-#        """ Trait initialiser """
-#
-#        if self.wizards:
-#            self.complete = True
-#            return self.wizards[0]
-#        else:
-#            return None
-
-
     def _wizard_changed(self, new):
-        """ Complete the wizard when a wizard is set """
-
+        """ Complete the wizard when a wizard is set.
+        """
         if isinstance(new, WizardExtension):
             self.complete = True
         else:
@@ -99,8 +91,8 @@ class WizardSelectionPage(WizardPage):
 
     @cached_property
     def _get__label(self):
-        """ Property getter """
-
+        """ Property getter.
+        """
         if self.wizard is not None:
             return self.wizard.description
         else:
@@ -109,12 +101,11 @@ class WizardSelectionPage(WizardPage):
 
     def on_selection_change(self, selection):
         """ Relates the container selected in the tree viewer to the wizard
-        page's folder trait.
-
+            page's folder trait.
         """
-
         if selection:
             sel = selection[0]
+
             if isinstance(sel, WizardExtension):
                 self.wizard = sel
             else:
@@ -125,8 +116,8 @@ class WizardSelectionPage(WizardPage):
     #--------------------------------------------------------------------------
 
     def create_page(self, parent):
-        """ Create the wizard page. """
-
+        """ Create the wizard page.
+        """
 #        self.tree_viewer = tree_viewer = WizardTreeViewer(
 #            parent=parent, input=self
 #        )
@@ -144,7 +135,8 @@ class WizardSelectionPage(WizardPage):
 #------------------------------------------------------------------------------
 
 class WizardSelectionWizard(ChainedWizard):
-    """ A wizard for wizard selection """
+    """ A wizard for wizard selection.
+    """
 
     #--------------------------------------------------------------------------
     #  "WizardSelectionWizard" interface:
@@ -159,15 +151,13 @@ class WizardSelectionWizard(ChainedWizard):
     #--------------------------------------------------------------------------
 
     def __init__(self, window, wizards, **traits):
-        """ Returns a new WizardSelectionWizard instance """
-
+        """ Returns a new WizardSelectionWizard instance.
+        """
         self.window = window
         self.wizards = wizards
 
         # Create the selection page...
-        wsp = WizardSelectionPage(
-            wizards=wizards, id="wizard_selection"
-        )
+        wsp = WizardSelectionPage(wizards=wizards, id="wizard_selection")
         wsp.on_trait_change(self.on_wizard_changed, "wizard")
 
         # ...add it to the wizard.
@@ -177,13 +167,13 @@ class WizardSelectionWizard(ChainedWizard):
 
 
     def on_wizard_changed(self, new):
-        """ Handles the selected wizard changing """
-
+        """ Handles the selected wizard changing.
+        """
         if new is not None:
             app = self.window.application
             wizard_klass = app.import_symbol(new.wizard_class)
-            self.next_wizard = wizard_klass(
-                parent=self.control, window=self.window
-            )
+
+            self.next_wizard = wizard_klass(parent=self.control,
+                window=self.window)
 
 # EOF -------------------------------------------------------------------------

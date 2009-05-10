@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines classes for use as dialog boxes with the workspace plug-in """
+""" Defines classes for use as dialog boxes with the workspace plug-in.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -38,8 +39,8 @@ from enthought.plugins.workspace.workspace_tree_viewer import \
 #------------------------------------------------------------------------------
 
 class FolderSelectionWizardPage(WizardPage):
-    """ Wizard page for parent folder selection """
-
+    """ Wizard page for parent folder selection.
+    """
     # The workspace from which the folder may be selected
     workspace = Instance(File, allow_none=False)
 
@@ -51,13 +52,12 @@ class FolderSelectionWizardPage(WizardPage):
     #--------------------------------------------------------------------------
 
     def create_page(self, parent):
-        """ Create the wizard page. """
-
+        """ Create the wizard page.
+        """
         tree_viewer = WorkspaceTreeViewer(
             parent=parent, input=self.workspace,
 #            filters=[AllowOnlyFolders()],
-            show_root=False
-        )
+            show_root=False)
 
         tree_viewer.on_trait_change(self.on_selection_change, "selection")
 
@@ -66,17 +66,15 @@ class FolderSelectionWizardPage(WizardPage):
 
     def on_selection_change(self, selection):
         """ Relates the folder selected in the tree viewer to the wizard
-        page's folder trait.
-
+            page's folder trait.
         """
-
         if selection:
             self.folder = selection[0]
 
 
     def _folder_changed(self, new):
-        """ Complete the wizard when an existing folder is set """
-
+        """ Complete the wizard when an existing folder is set.
+        """
         if (new is not None) and new.exists:
             self.complete = True
         else:

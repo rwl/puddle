@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Resource plug-in action set """
+""" Resource plug-in action set.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -30,7 +31,8 @@ from enthought.envisage.ui.workbench.api import WorkbenchActionSet
 #------------------------------------------------------------------------------
 
 class ResourceActionSet(WorkbenchActionSet):
-    """ Resource plug-in action set """
+    """ Resource plug-in action set.
+    """
 
     #--------------------------------------------------------------------------
     #  "ActionSet" interface:
@@ -202,7 +204,8 @@ class ResourceActionSet(WorkbenchActionSet):
 #------------------------------------------------------------------------------
 
 class ContextMenuActionSet(WorkbenchActionSet):
-    """ Action set for the resource view context menu """
+    """ Action set for the resource view context menu.
+    """
 
     #--------------------------------------------------------------------------
     #  "ActionSet" interface:

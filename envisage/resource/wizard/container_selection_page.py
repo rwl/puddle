@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines a wizard page for container selection """
+""" Defines a wizard page for container selection.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -37,7 +38,8 @@ from enthought.pyface.wizard.api import SimpleWizard, WizardPage
 #------------------------------------------------------------------------------
 
 class ContainerSelectionPage(WizardPage):
-    """ Wizard page for container selection """
+    """ Wizard page for container selection.
+    """
 
     #--------------------------------------------------------------------------
     #  "ContainerSelectionPage" interface:
@@ -54,16 +56,15 @@ class ContainerSelectionPage(WizardPage):
         Heading("Container"),
         Label("Enter or select the parent directory"),
 #        Item(name="directory", style="text", show_label=False),
-        Item(name="directory", style="simple", show_label=False)
-    )
+        Item(name="directory", style="simple", show_label=False) )
 
     #--------------------------------------------------------------------------
     #  "ContainerSelectionPage" interface:
     #--------------------------------------------------------------------------
 
     def _directory_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         # FIXME: Under Windows if a 'custom' directory editor is used in the
         # view then this initialiser is called after the page has been
         # destroyed and any call to self raises an error.
@@ -76,8 +77,8 @@ class ContainerSelectionPage(WizardPage):
 
 
     def _directory_changed(self, new):
-        """ Complete the wizard when a container is selected """
-
+        """ Complete the wizard when a container is selected.
+        """
         if new != "":
             self.complete = True
         else:
@@ -88,8 +89,8 @@ class ContainerSelectionPage(WizardPage):
     #--------------------------------------------------------------------------
 
     def create_page(self, parent):
-        """ Create the wizard page. """
-
+        """ Create the wizard page.
+        """
         ui = self.edit_traits(parent=parent, kind="subpanel")
 
         return ui.control

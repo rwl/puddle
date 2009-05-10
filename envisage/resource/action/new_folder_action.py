@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines an action for folder resource creation """
+""" Defines an action for folder resource creation.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -45,7 +46,8 @@ WORKSPACE_VIEW = "pylon.plugin.resource.resource_view"
 #------------------------------------------------------------------------------
 
 class NewFolderAction(Action):
-    """ An action for creating new folders """
+    """ An action for creating new folders.
+    """
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -67,85 +69,19 @@ class NewFolderAction(Action):
 #    enabled = Bool(False)
 
     #--------------------------------------------------------------------------
-    #  "NewProjectAction" interface:
-    #--------------------------------------------------------------------------
-
-#    def __init__(self, **traits):
-#        """ Returns a new NewFolderAction """
-#        super(NewFolderAction, self).__init__(**traits)
-#
-#        if traits.has_key("window"):
-#            traits["window"].on_trait_change(
-#                self.on_selection_change, "selection"
-#            )
-#
-#
-#    def on_selection_change(self, new):
-#        """ Enables the action if the current selection is a project or
-#        a folder and not a workspace.
-#
-#        """
-#
-#        if len(new) == 1:
-#            selection = new[0]
-#            if isinstance(selection, Project):
-#                self.enabled = True
-#            elif isinstance(selection, File) and selection.is_folder and \
-#                (not isinstance(selection, Workspace)):
-#                self.enabled = True
-#            else:
-#                self.enabled = False
-
-    #--------------------------------------------------------------------------
     #  "Action" interface:
     #--------------------------------------------------------------------------
 
     def perform(self, event):
-        """ Performs the action """
-
-        wizard = FolderWizard(
-            parent=self.window.control, window=self.window,
-            title="New Folder"
-        )
+        """ Performs the action.
+        """
+        wizard = FolderWizard(parent=self.window.control, window=self.window,
+            title="New Folder")
 
         # Open the wizard
         if wizard.open() == OK:
-            pass
             wizard.finished = True
 
-#        workspace = self.window.application.get_service(WORKSPACE_SERVICE)
-#        if workspace is not None:
-##            selections = self.window.selection
-##            print "SELECTIONS:", selections
-##            if selections:
-##                sel = selections[0]
-#
-#            cswp = ContainerSelectionWizardPage(
-#                id="parent_folder", workspace=workspace
-#            )
-#            fwp = FolderWizardPage(id="new_folder", cswp=cswp)
-#
-#            wizard = SimpleWizard(
-#                parent=self.window.control,
-#                title="New Folder", pages=[cswp, fwp]
-#            )
-#
-#            # Open the wizard
-#            if wizard.open() == OK:
-#                try:
-##                    File(fwp.abs_path).create_folder()
-#                    raise NotImplementedError
-#                except ValueError:
-#                    error(
-#                        self.window.control, title="Error",
-#                        message="An error was encountered trying to "
-#                        "create the folder."
-#                    )
-#
-#                # Refresh the workspace tree view
-#                view = self.window.get_view_by_id(WORKSPACE_VIEW)
-#                if view is not None:
-#                    view.ws_tree_viewer.refresh()
         return
 
 # EOF -------------------------------------------------------------------------

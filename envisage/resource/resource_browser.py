@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines a tree view of workbench resources """
+""" Defines a tree view of workbench resources.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -69,8 +70,8 @@ class ResourceBrowser(HasTraits):
     )
 
     def _workspace_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         # Note that we always offer the service via its name, but look it up
         # via the actual protocol.
         from i_workspace import IWorkspace
@@ -93,8 +94,8 @@ class ResourceBrowser(HasTraits):
 
 
     def _context_menu_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         if self.window is not None:
             extensions = self.window.application.get_extensions(ACTION_SETS)
             action_sets = [ext(window=self.window) for ext in extensions]
@@ -117,15 +118,15 @@ class ResourceBrowser(HasTraits):
 
 
     def _on_dclick(self, object):
-        """ Handle tree nodes being double clicked """
-
+        """ Handle tree nodes being double clicked.
+        """
         if self.window is not None:
             self.window.edit(object)
 
 
     def _on_select(self, object):
-        """ Handle tree node selection """
-
+        """ Handle tree node selection.
+        """
         pass
 
 #------------------------------------------------------------------------------

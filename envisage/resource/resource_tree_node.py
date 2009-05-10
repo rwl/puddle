@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines a tree node for file objects """
+""" Defines a tree node for file objects.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -38,15 +39,16 @@ from enthought.traits.ui.api import \
 #------------------------------------------------------------------------------
 
 class FileTreeNode(TreeNode):
-    """ A tree node for a file object """
+    """ A tree node for a file object.
+    """
 
     #--------------------------------------------------------------------------
     # "TreeNode" interface:
     #--------------------------------------------------------------------------
 
     def allows_children(self, obj):
-        """ Return True if this object allows children """
-
+        """ Return True if this object allows children.
+        """
         if obj.is_folder:
             return True
         else:
@@ -54,8 +56,8 @@ class FileTreeNode(TreeNode):
 
 
     def has_children(self, obj):
-        """ Returns True if this object has children """
-
+        """ Returns True if this object has children.
+        """
         return bool(obj.children)
 
 
@@ -72,25 +74,23 @@ class FileTreeNode(TreeNode):
 
 
     def get_label(self, obj):
-        """ Get the object's label """
-
+        """ Get the object's label.
+        """
         return obj.name+obj.ext
 
 
     def is_node_for(self, obj):
-        """ Return whether this is the node for a specified object """
-
+        """ Return whether this is the node for a specified object.
+        """
         return isinstance(obj, File)
 
 
     def get_view(self, object):
-        """ Gets the view to use when editing an object """
-
-        view = View(
-            Item(name="absolute_path", style="readonly"),
+        """ Gets the view to use when editing an object.
+        """
+        view = View(Item(name="absolute_path", style="readonly"),
             Item(name="mime_type", style="readonly"),
-            Item(name="url", style="readonly"),
-        )
+            Item(name="url", style="readonly"))
 
         return view
 

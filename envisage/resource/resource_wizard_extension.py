@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Resource wizard extensions """
+""" Resource wizard extensions.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -30,7 +31,8 @@ from wizard_extension import WizardExtension
 #------------------------------------------------------------------------------
 
 class FolderWizardExtension(WizardExtension):
-    """ Contributes a new folder wizard """
+    """ Contributes a new folder wizard.
+    """
 
     # The wizard contribution's globally unique identifier.
     id = "envisage.resource.folder_wizard"
@@ -54,8 +56,7 @@ class FolderWizardExtension(WizardExtension):
 
 class ImportFileSystemWizardExtension(WizardExtension):
     """ Contributes a wizard for importing resources from the file system
-    to existing projects.
-
+        to existing projects.
     """
 
     # The wizard contribution's globally unique identifier.
@@ -69,7 +70,7 @@ class ImportFileSystemWizardExtension(WizardExtension):
 
     # The class of contributed wizard
     wizard_class = "envisage.resource.wizard." \
-    "import_file_system_wizard:ImportFileSystemWizard"
+        "import_file_system_wizard:ImportFileSystemWizard"
 
     # A longer description of the wizard's function
     description = "Import resources from the file system to existing projects."

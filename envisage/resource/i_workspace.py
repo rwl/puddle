@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines the workspace interface """
+""" Defines the workspace interface.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -28,12 +29,15 @@ from enthought.traits.api import Interface
 #------------------------------------------------------------------------------
 
 class IWorkspace(Interface):
-    """ Defines the workspace interface """
+    """ Defines the workspace interface.
+    """
 
     def get_project(self, name):
-        """ Returns a project resource """
+        """ Returns a project resource.
+        """
 
     def add_project(self, project):
-        """ Adds a project resource to the workspace """
+        """ Adds a project resource to the workspace.
+        """
 
 # EOF -------------------------------------------------------------------------

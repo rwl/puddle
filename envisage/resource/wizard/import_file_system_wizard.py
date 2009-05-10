@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,8 +16,7 @@
 #------------------------------------------------------------------------------
 
 """ Defines a wizard for importing resources from the file system to
-an existing project.
-
+    an existing project.
 """
 
 #------------------------------------------------------------------------------
@@ -40,7 +39,8 @@ from envisage.resource.resource_dialog import FolderSelectionWizardPage
 #------------------------------------------------------------------------------
 
 class ImportFileSystemWizardPage(WizardPage):
-    """ Wizard page for selection of files for import """
+    """ Wizard page for selection of files for import.
+    """
 
     #--------------------------------------------------------------------------
     #  ImportFileSystemWizardPage interface:
@@ -67,8 +67,8 @@ class ImportFileSystemWizardPage(WizardPage):
     #--------------------------------------------------------------------------
 
     def create_page(self, parent):
-        """ Create the wizard page. """
-
+        """ Create the wizard page.
+        """
         ui = self.edit_traits(parent=parent, kind='subpanel')
 
         return ui.control
@@ -79,11 +79,10 @@ class ImportFileSystemWizardPage(WizardPage):
 
     @cached_property
     def _get__label(self):
-        """ Property getter """
-
-        l = "Import resources from the local file system into "
-        "an existing project."
-
+        """ Property getter.
+        """
+        l = "Import resources from the local file system into " \
+            "an existing project."
         self.complete = True
 
         return l
@@ -94,16 +93,15 @@ class ImportFileSystemWizardPage(WizardPage):
 
 class ImportFileSystemWizard(SimpleWizard):
     """ A wizard for importing resources from the file system
-    to an existing project.
-
+        to an existing project.
     """
 
     # The dialog title
     title = "Import"
 
     def __init__(self, workspace, **traits):
-        """ Returns a ProjectWizard """
-
+        """ Returns a ProjectWizard.
+        """
         self.pages = [
             FolderSelectionWizardPage(
                 id="folder_selection", workspace=workspace
@@ -118,7 +116,6 @@ class ImportFileSystemWizard(SimpleWizard):
 #------------------------------------------------------------------------------
 
 if __name__ == "__main__":
-
     from enthought.pyface.api import GUI
 
     # Create the GUI.

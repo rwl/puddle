@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines a wizard extension to the workspace plug-in """
+""" Defines a wizard extension to the workspace plug-in.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -33,7 +34,8 @@ logger = logging.getLogger(__name__)
 #------------------------------------------------------------------------------
 
 class WizardExtension(HasTraits):
-    """ Defines a wizard extension to the resource plug-in """
+    """ Defines a wizard extension to the resource plug-in.
+    """
 
     # The wizard contribution's globally unique identifier.
     id = Str
@@ -51,12 +53,11 @@ class WizardExtension(HasTraits):
     description = Str
 
     def _id_default(self):
-        """ Trait initialiser """
-
+        """ Trait initialiser.
+        """
         id = "%s.%s" % (type(self).__module__, type(self).__name__)
-        logger.warn(
-            "wizard contribution %s has no Id - using <%s>" % (self, id)
-        )
+        logger.warn( "wizard contribution %s has no Id - using <%s>" %
+            (self, id) )
 
         return id
 

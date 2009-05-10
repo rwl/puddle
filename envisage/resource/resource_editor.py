@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (C) 2007 Richard W. Lincoln
+# Copyright (C) 2009 Richard W. Lincoln
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,8 @@
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #------------------------------------------------------------------------------
 
-""" Defines a resource editor for the resource plug-in """
+""" Defines a resource editor for the resource plug-in.
+"""
 
 #------------------------------------------------------------------------------
 #  Imports:
@@ -39,7 +40,8 @@ from i_resource import IResource
 #------------------------------------------------------------------------------
 
 class ResourceEditor(TraitsUIEditor):
-    """ An editor with content provided by a workspace resource """
+    """ An editor with content provided by a workspace resource.
+    """
 
     # Is the object that the editor is editing 'dirty' i.e., has it been
     # modified but not saved?
@@ -64,13 +66,10 @@ class ResourceEditor(TraitsUIEditor):
     #--------------------------------------------------------------------------
 
     def create_ui(self, parent):
-        """ Creates the traits UI that represents the editor """
-
+        """ Creates the traits UI that represents the editor.
+        """
         input = self.editor_input.load()
-
-        ui = self.edit_traits(
-            parent=parent, view=self.view, kind="subpanel"
-        )
+        ui = input.edit_traits(parent=parent, view=self.view, kind="subpanel")
 
         return ui
 
@@ -79,14 +78,14 @@ class ResourceEditor(TraitsUIEditor):
     #--------------------------------------------------------------------------
 
     def save(self):
-        """ Saves the editor content """
-
+        """ Saves the editor content.
+        """
         self.editor_input.save()
 
 
     def save_as(self):
-        """ Saves the editor content to a new file name """
-
+        """ Saves the editor content to a new file name.
+        """
         pass
 
     #--------------------------------------------------------------------------
@@ -109,8 +108,8 @@ class ResourceEditor(TraitsUIEditor):
 
 
     def _editor_input_changed(self, old, new):
-        """ Static trait change handler """
-
+        """ Static trait change handler.
+        """
         if old is not None:
             old.on_trait_change(self._set_dirty, remove=True)
 
@@ -121,19 +120,18 @@ class ResourceEditor(TraitsUIEditor):
 
 
     def _set_dirty(self):
-        """ Sets the dirty flag to True """
-
+        """ Sets the dirty flag to True.
+        """
         self.dirty = True
 
 
     def _editor_closing_changed_for_window(self, editor):
-        """ Handle the editor being closed """
-
+        """ Handle the editor being closed.
+        """
         if (editor is self) and self.dirty:
-            retval = confirm(
-                self.window.control, title="Save Resource",
-                message="'%s' has been modified. Save changes?" % self.name[1:]
-            )
+            retval = confirm(self.window.control, title="Save Resource",
+                message="'%s' has been modified. Save changes?" %
+                self.name[1:])
 
             if retval == YES:
                 self.save()
@@ -162,14 +160,14 @@ class ResourceEditor(TraitsUIEditor):
 
 
     def _on_dclick(self, object):
-        """ Handle item activation """
-
+        """ Handle item activation.
+        """
         pass
 
 
     def _on_select(self, object):
-        """ Handle item selection """
-
+        """ Handle item selection.
+        """
         pass
 
 
@@ -181,10 +179,8 @@ class ResourceEditor(TraitsUIEditor):
 
     def _dirty_fired(self, old, new):
         """ Prepends a '*' to the editor's name when dirty and
-        removes it when clean.
-
+            removes it when clean.
         """
-
         if (old is False) and (new is True):
             self.name = "*" + self.name
 
