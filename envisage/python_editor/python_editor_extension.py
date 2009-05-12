@@ -49,7 +49,7 @@ class PythonEditorExtension(Editor):
     extensions = [".py"]
 
     # If true, this editor will be used as the default editor for the type
-    default = True
+    default = False
 
 #------------------------------------------------------------------------------
 #  "TextEditorExtension" class:

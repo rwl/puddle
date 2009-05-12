@@ -22,7 +22,7 @@
 #  Imports:
 #------------------------------------------------------------------------------
 
-from os.path import getmtime
+from os.path import getmtime, dirname
 
 import pickle as pickle
 
@@ -68,7 +68,7 @@ class ResourceEditor(TraitsUIEditor):
     def create_ui(self, parent):
         """ Creates the traits UI that represents the editor.
         """
-        input = self.editor_input.load()
+        self.document = input = self.editor_input.load()
         ui = input.edit_traits(parent=parent, view=self.view, kind="subpanel")
 
         return ui
@@ -80,13 +80,22 @@ class ResourceEditor(TraitsUIEditor):
     def save(self):
         """ Saves the editor content.
         """
-        self.editor_input.save()
+        self.editor_input.save(self.document)
+        self.dirty = False
 
 
     def save_as(self):
         """ Saves the editor content to a new file name.
         """
-        pass
+        dialog = FileDialog( action   = "save as",
+                             wildcard = "All Files (*.*)|*.*",
+                             default_directory = dirname(self.obj.path) )
+
+        if dialog.open() == OK:
+            self.obj.path = dialog.path
+            self.save()
+
+        del dialog
 
     #--------------------------------------------------------------------------
     #  Private interface:
@@ -187,79 +196,6 @@ class ResourceEditor(TraitsUIEditor):
         if (old is True) and (new is False):
             if self.name and (self.name[0] == "*"):
                 self.name = self.name[1:]
-
-#------------------------------------------------------------------------------
-#  "ResourceEditor" class:
-#------------------------------------------------------------------------------
-
-#class ResourceEditor(TraitsUIEditor):
-#    """ An editor with a dynamic name and pickling abilities """
-#
-#    #--------------------------------------------------------------------------
-#    #  "ResourceEditor" interface
-#    #--------------------------------------------------------------------------
-#
-#    # The object provided by the resource being edited
-#    document = Instance(HasTraits)
-#
-#    # Document provider that handles reading and saving resources
-#    provider = Instance(PickledProvider, ())
-#
-#    # The time of the last modification to the resource
-#    m_time = Float
-#
-#    # A View object (or its name) that defines a user interface for
-#    # editing trait attribute values of the current object. If the view is
-#    # defined as an attribute on this class, use the name of the attribute.
-#    # Otherwise, use a reference to the view object. If this attribute is
-#    # not specified, the View object returned by trait_view() is used.
-#    view = Either(Str, Instance(View))
-#
-#    # An optional reference to the currently selected object in the editor
-#    selected = Instance(HasTraits)
-#
-#    #--------------------------------------------------------------------------
-#    #  "TraitsUIEditor" interface
-#    #--------------------------------------------------------------------------
-#
-#    def _name_default(self):
-#        """ Trait initialiser """
-#
-#        if hasattr(self.obj, "name") and hasattr(self.obj, "ext"):
-#            self.obj.on_trait_change(self.on_name, "name")
-#            return self.obj.name + self.obj.ext
-#        else:
-#            return str(self.obj)
-#
-#
-#    def _m_time_default(self):
-#        """ Trait initialiser """
-#
-#        if self.obj.exists:
-#            return getmtime(self.obj.absolute_path)
-#        else:
-#            return 0.0
-#
-#
-#    def create_ui(self, parent):
-#        """ Creates the traits UI that represents the editor """
-#
-#        self.document = document = self.provider.create_document(self.obj)
-#
-#        ui = document.edit_traits(
-#            view=self._create_view(), parent=parent, kind="subpanel"
-#        )
-#
-#        # Dynamic notification of document object modification
-#        document.on_trait_change(self.on_document_modified)
-#
-#        return ui
-#
-#
-#    def _create_view(self):
-#        """ Create a view with a tree editor """
-#
-#        return self.view
 #
 #    #--------------------------------------------------------------------------
 #    #  "ResourceEditor" interface
@@ -269,40 +205,14 @@ class ResourceEditor(TraitsUIEditor):
 #        """ Handle the object name changing """
 #
 #        self.name = new
-#
-#
-#    def on_document_modified(self):
-#        """ Dirties the editor when the document is modified """
-#
-#        self.dirty = True
-#
-#
-#    def _dirty_fired(self, old, new):
-#        """ Prepends a '*' to the editor's name when dirty and
-#        removes it when clean.
-#
-#        """
-#
-#        if (old is False) and (new is True):
-#            self.name = "*" + self.name
-#
-#        if (old is True) and (new is False):
-#            if self.name and (self.name[0] == "*"):
-#                self.name = self.name[1:]
-#
-#
-#    def save(self):
-#        """ Calls on the document provider to persist that state of
-#        the document
-#
-#        """
-#
-#        if self.document is not None:
-#            saved = self.provider.do_save(self.obj, self.document)
-#            if saved:
-#                self.dirty = False
-#
-#
+
+
+    def on_document_modified(self):
+        """ Dirties the editor when the document is modified """
+
+        self.dirty = True
+
+
 #    def _editor_closing_changed_for_window(self, editor):
 #        """ Handle the editor being closed """
 #
