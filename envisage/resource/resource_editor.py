@@ -59,7 +59,7 @@ class ResourceEditor(TraitsUIEditor):
     selected = Instance(HasTraits)
 
     # The default view:
-    traits_view = View(Item("editor_input"))
+#    traits_view = View(Item("editor_input"))
 
     #--------------------------------------------------------------------------
     #  "TraitsUIEditor" interface:
@@ -69,7 +69,7 @@ class ResourceEditor(TraitsUIEditor):
         """ Creates the traits UI that represents the editor.
         """
         self.document = input = self.editor_input.load()
-        ui = input.edit_traits(parent=parent, view=self.view, kind="subpanel")
+        ui = input.edit_traits(parent=parent, kind="subpanel")
 
         return ui
 
