@@ -24,10 +24,13 @@
 
 from os.path import expanduser, join, exists
 
+from enthought.io.file import File
+
 from enthought.traits.api import Instance, Bool
 from enthought.pyface.wizard.api import WizardPage
 
-from envisage.resource.resource import Workspace, File
+from envisage.resource.i_workspace import IWorkspace
+#from envisage.resource.resource import Workspace, File
 from envisage.resource.resource_tree_viewer import ResourceTreeViewer
 
 #------------------------------------------------------------------------------
@@ -49,7 +52,7 @@ class ResourceSelectionPage(WizardPage):
     #--------------------------------------------------------------------------
 
     # The workspace from which the file may be selected
-    workspace = Instance(Workspace, allow_none=False)
+    workspace = Instance(IWorkspace, allow_none=False)
 
     # The selected parent folder
     resource = Instance(File)

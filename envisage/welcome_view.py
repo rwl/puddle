@@ -23,13 +23,16 @@
 #------------------------------------------------------------------------------
 
 from os.path import exists, dirname, join
-from enthought.traits.api import Instance, File, Event
+from enthought.traits.api import Instance, File, Event, Str, Font, Color
 from enthought.traits.ui.api import View, Item, TreeEditor
 from enthought.pyface.image_resource import ImageResource
 from enthought.pyface.workbench.api import View as WorkbenchView
 from enthought.enable.api import Viewport, Canvas, Component, Pointer
 from enthought.enable.component_editor import ComponentEditor
 from enthought.kiva.backend_image import Image as KivaImage
+from enthought.kiva.fonttools.font import str_to_font
+
+from enthought.enable.colors import ColorTrait
 
 #------------------------------------------------------------------------------
 #  "Image" class:
@@ -58,6 +61,54 @@ class Image(Component):
             gc.draw_image(img, (self.x, self.y, w, h))
 
             gc.restore_state()
+
+#------------------------------------------------------------------------------
+#  "RelativeText" class:
+#------------------------------------------------------------------------------
+
+class RelativeText(Component):
+    """ Defines an image component.
+    """
+
+    #--------------------------------------------------------------------------
+    #  "RelativeText" interface:
+    #--------------------------------------------------------------------------
+
+    text = Str
+
+    font = Font
+
+    font_color = Color
+
+    #--------------------------------------------------------------------------
+    #  Component interface:
+    #--------------------------------------------------------------------------
+
+    bgcolor = "fuchsia"
+
+    #--------------------------------------------------------------------------
+    #  Draw component on the graphics context:
+    #--------------------------------------------------------------------------
+
+    def _draw_mainlayer(self, gc, view_bounds=None, mode="default"):
+
+        gc.save_state()
+
+        font = str_to_font( str(self.font) )
+        gc.set_font(font)
+
+        gc.set_fill_color(self.font_color_)
+#        gc.set_fill_color(self.font_color)
+
+        x = gc.width() * 0.3
+        y = gc.height() * 0.6
+
+        gc.show_text_at_point(self.text, x, y)
+
+        self.position = [x, y]
+#            self.bounds = [w, h]
+
+        gc.restore_state()
 
 #------------------------------------------------------------------------------
 #  "RelativeImage" class:
@@ -195,9 +246,14 @@ class WelcomeView(WorkbenchView):
         workbench = RelativeImage(image_file=workbench_path, bounds=[128, 128])
         workbench.on_trait_change(self._on_workbench, "selected")
 
+        app_name = self.window.application.name
+        title = RelativeText(text=app_name, font="Sans 72",
+            font_color="dark orchid", bounds=[66, 66])
+
         canvas = Canvas(bgcolor="white")
         canvas.add(logo)
         canvas.add(workbench)
+#        canvas.add(title)
 
         return canvas
 
