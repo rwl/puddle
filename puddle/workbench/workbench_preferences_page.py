@@ -20,22 +20,32 @@
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
 
-from setuptools import setup, find_packages
+""" Defines the preferences page for the workbench plug-in.
+"""
 
-setup(
-    author="Richard W. Lincoln",
-    author_email="r.w.lincoln@gmail.com",
-    description="Extensible Python IDE.",
-    url="http://rwl.github.com/puddle",
-    version="0.1",
-    entry_points={"gui_scripts": ["puddle = puddle.run:main"]},
-    install_requires=["EnvisageCore>=3.0.2", "EnvisagePlugins>=3.0.2"],
-    license="GPLv2",
-    name="Puddle",
-    include_package_data=True,
-    packages=find_packages(),
-#    namespace_packages=[],
-    zip_safe=False
-)
+#------------------------------------------------------------------------------
+#  Imports:
+#------------------------------------------------------------------------------
+
+from enthought.traits.ui.api import View, Item, Group, Label, Heading
+
+from enthought.envisage.ui.workbench.workbench_preferences_page import \
+    WorkbenchPreferencesPage as EnthoughtWorkbenchPreferencesPage
+
+#------------------------------------------------------------------------------
+#  "WorkbenchPreferencesPage" class:
+#------------------------------------------------------------------------------
+
+class WorkbenchPreferencesPage(EnthoughtWorkbenchPreferencesPage):
+    """ Extended with a heading.
+    """
+
+    # Traits UI views ---------------------------------------------------------
+
+    trait_view = View(
+        Label("Workbench"),
+        "_",
+        Group(Item(name="prompt_on_exit"))
+    )
 
 # EOF -------------------------------------------------------------------------

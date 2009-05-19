@@ -19,23 +19,3 @@
 #  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
-
-from setuptools import setup, find_packages
-
-setup(
-    author="Richard W. Lincoln",
-    author_email="r.w.lincoln@gmail.com",
-    description="Extensible Python IDE.",
-    url="http://rwl.github.com/puddle",
-    version="0.1",
-    entry_points={"gui_scripts": ["puddle = puddle.run:main"]},
-    install_requires=["EnvisageCore>=3.0.2", "EnvisagePlugins>=3.0.2"],
-    license="GPLv2",
-    name="Puddle",
-    include_package_data=True,
-    packages=find_packages(),
-#    namespace_packages=[],
-    zip_safe=False
-)
-
-# EOF -------------------------------------------------------------------------

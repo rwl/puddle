@@ -20,22 +20,11 @@
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
 
-from setuptools import setup, find_packages
+""" Resource plug-in API.
+"""
 
-setup(
-    author="Richard W. Lincoln",
-    author_email="r.w.lincoln@gmail.com",
-    description="Extensible Python IDE.",
-    url="http://rwl.github.com/puddle",
-    version="0.1",
-    entry_points={"gui_scripts": ["puddle = puddle.run:main"]},
-    install_requires=["EnvisageCore>=3.0.2", "EnvisagePlugins>=3.0.2"],
-    license="GPLv2",
-    name="Puddle",
-    include_package_data=True,
-    packages=find_packages(),
-#    namespace_packages=[],
-    zip_safe=False
-)
-
-# EOF -------------------------------------------------------------------------
+from resource_plugin import ResourcePlugin
+from i_resource import IResource
+from resource_editor import ResourceEditor
+#from resource_adapter import PickleFileIResourceAdapter
+from editor import Editor

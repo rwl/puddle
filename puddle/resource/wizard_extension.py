@@ -20,22 +20,50 @@
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
 
-from setuptools import setup, find_packages
+""" Defines a wizard extension to the workspace plug-in.
+"""
 
-setup(
-    author="Richard W. Lincoln",
-    author_email="r.w.lincoln@gmail.com",
-    description="Extensible Python IDE.",
-    url="http://rwl.github.com/puddle",
-    version="0.1",
-    entry_points={"gui_scripts": ["puddle = puddle.run:main"]},
-    install_requires=["EnvisageCore>=3.0.2", "EnvisagePlugins>=3.0.2"],
-    license="GPLv2",
-    name="Puddle",
-    include_package_data=True,
-    packages=find_packages(),
-#    namespace_packages=[],
-    zip_safe=False
-)
+#------------------------------------------------------------------------------
+#  Imports:
+#------------------------------------------------------------------------------
+
+import logging
+
+from enthought.traits.api import HasTraits, Instance, Str, List
+from enthought.pyface.api import ImageResource
+
+logger = logging.getLogger(__name__)
+
+#------------------------------------------------------------------------------
+#  "WizardExtension" class:
+#------------------------------------------------------------------------------
+
+class WizardExtension(HasTraits):
+    """ Defines a wizard extension to the resource plug-in.
+    """
+
+    # The wizard contribution's globally unique identifier.
+    id = Str
+
+    # Human readable identifier
+    name = Str
+
+    # The wizards's image (displayed on selection etc)
+    image = Instance(ImageResource)
+
+    # The class of contributed wizard
+    wizard_class = Str
+
+    # A longer description of the wizard's function
+    description = Str
+
+    def _id_default(self):
+        """ Trait initialiser.
+        """
+        id = "%s.%s" % (type(self).__module__, type(self).__name__)
+        logger.warn( "wizard contribution %s has no Id - using <%s>" %
+            (self, id) )
+
+        return id
 
 # EOF -------------------------------------------------------------------------

@@ -20,22 +20,43 @@
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
 
-from setuptools import setup, find_packages
+""" Defines the resource interface.
+"""
 
-setup(
-    author="Richard W. Lincoln",
-    author_email="r.w.lincoln@gmail.com",
-    description="Extensible Python IDE.",
-    url="http://rwl.github.com/puddle",
-    version="0.1",
-    entry_points={"gui_scripts": ["puddle = puddle.run:main"]},
-    install_requires=["EnvisageCore>=3.0.2", "EnvisagePlugins>=3.0.2"],
-    license="GPLv2",
-    name="Puddle",
-    include_package_data=True,
-    packages=find_packages(),
-#    namespace_packages=[],
-    zip_safe=False
-)
+#------------------------------------------------------------------------------
+#  Imports:
+#------------------------------------------------------------------------------
+
+from enthought.traits.api import Interface, Property, Bool
+
+#------------------------------------------------------------------------------
+#  "IResource" class:
+#------------------------------------------------------------------------------
+
+class IResource(Interface):
+    """ Interface for resource.
+    """
+
+    dirty = Bool(False)
+
+    is_modifiable = Property(Bool)
+
+    is_readonly = Property(Bool)
+
+    def save(self, file):
+        """ Save the object to a file.
+        """
+
+    def load(self, file):
+        """ Load the object from a file.
+        """
+
+    def _get_is_modifiable(self):
+        """ Property getter.
+        """
+
+    def _get_is_readonly(self):
+        """ Property getter.
+        """
 
 # EOF -------------------------------------------------------------------------
