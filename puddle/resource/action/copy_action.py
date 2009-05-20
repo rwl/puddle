@@ -27,6 +27,8 @@
 #  Imports:
 #------------------------------------------------------------------------------
 
+from os.path import dirname, join
+
 from enthought.io.api import File
 from enthought.traits.api import HasTraits, Directory, Bool, Instance
 from enthought.traits.ui.api import View, Item, Label

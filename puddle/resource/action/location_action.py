@@ -27,7 +27,7 @@
 #  Imports:
 #------------------------------------------------------------------------------
 
-from os.path import expanduser
+from os.path import expanduser, dirname
 
 from enthought.traits.api import Bool, Instance
 from enthought.pyface.api import ImageResource

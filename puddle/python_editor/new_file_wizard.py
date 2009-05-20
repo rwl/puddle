@@ -38,6 +38,7 @@ from enthought.traits.ui.api import \
     View, Item, Group, Label, Heading, DirectoryEditor
 
 from enthought.traits.ui.menu import OKCancelButtons
+from enthought.pyface.api import ImageResource
 from enthought.pyface.wizard.api import SimpleWizard, WizardPage
 
 from enthought.envisage.ui.workbench.workbench_window import WorkbenchWindow

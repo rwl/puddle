@@ -52,7 +52,7 @@ from resource_tree_viewer import \
 #  Constants:
 #------------------------------------------------------------------------------
 
-RESOURCE_VIEW = "envisage.resource.resource_view"
+RESOURCE_VIEW = "puddle.resource.resource_view"
 
 ACTION_SETS = "enthought.envisage.ui.workbench.action_sets"
 

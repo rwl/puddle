@@ -67,11 +67,10 @@ class WorkbenchApplication(WorkbenchApplication):
     name = "Puddle"
 
     # The default position of the main window.
-    window_position = Tuple((0, 0))
+    window_position = Tuple((60, 60))
 
     # The default size of the main window.
-#    window_size = Tuple((1024, 768))
-    window_size = Tuple((1024, 768))
+    window_size = Tuple((800, 600))
 
 
     def _about_dialog_default(self):
@@ -80,20 +79,20 @@ class WorkbenchApplication(WorkbenchApplication):
         about_dialog = AboutDialog(
             parent=self.workbench.active_window.control,
             image=ImageResource("splash"),
-            additions=["@see:  Tango Icon Library"],
+            additions=["Richard W. Lincoln &copy; MMIX"],
         )
 
         return about_dialog
 
 
-    def _splash_screen_default(self):
-        """ Trait initialiser.
-        """
-        splash_screen = SplashScreen(
-            image=ImageResource("splash"), show_log_messages=False,
-            text_color="black"#, text_font="10 point Monospace"
-        )
-
-        return splash_screen
+#    def _splash_screen_default(self):
+#        """ Trait initialiser.
+#        """
+#        splash_screen = SplashScreen(
+#            image=ImageResource("splash"), show_log_messages=False,
+#            text_color="black"#, text_font="10 point Monospace"
+#        )
+#
+#        return splash_screen
 
 # EOF -------------------------------------------------------------------------
