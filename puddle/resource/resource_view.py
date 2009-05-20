@@ -37,7 +37,9 @@ from enthought.pyface.workbench.api import View as WorkbenchView
 from enthought.envisage.ui.workbench.workbench_action_manager_builder import \
     WorkbenchActionManagerBuilder
 
-from resource import File
+#from resource import File
+from enthought.io.api import File
+
 from action.open_action import OpenAction
 
 from resource_tree_viewer import \

@@ -37,10 +37,14 @@ from os.path import dirname, isdir, join, exists, basename, expanduser
 
 from enthought.etsconfig.api import ETSConfig
 from enthought.envisage.api import Plugin, ExtensionPoint, ServiceOffer
-from enthought.traits.api import List, Instance, String, Callable
+from enthought.traits.api import List, Instance, String, Callable, implements
 from enthought.pyface.api import error
 
-from workspace_launcher import WorkspaceLauncher
+from enthought.io.api import File as IOFile
+
+#from workspace_launcher import WorkspaceLauncher
+
+from i_workspace import IWorkspace
 
 #------------------------------------------------------------------------------
 #  Logging:
@@ -56,6 +60,14 @@ EDITORS        = "puddle.resource.editors"
 NEW_WIZARDS    = "puddle.resource.new_wizards"
 IMPORT_WIZARDS = "puddle.resource.import_wizards"
 EXPORT_WIZARDS = "puddle.resource.export_wizards"
+
+#------------------------------------------------------------------------------
+#  "File" class:
+#------------------------------------------------------------------------------
+
+class File(IOFile):
+
+    implements(IWorkspace)
 
 #------------------------------------------------------------------------------
 #  "ResourcePlugin" class:
@@ -265,7 +277,7 @@ class ResourcePlugin(Plugin):
         """
         # Only do imports when you need to! This makes sure that the import
         # only happens when somebody needs an "IWorkspace" service.
-        from resource import File
+#        from resource import File
 
         path = self.application.preferences.get("puddle.resource.default",
             expanduser("~"))

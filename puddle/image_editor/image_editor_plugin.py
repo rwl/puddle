@@ -20,74 +20,49 @@
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
 
-""" Defines an action for moving the workspace to the parent directory.
+""" Image editor plug-in.
 """
 
 #------------------------------------------------------------------------------
 #  Imports:
 #------------------------------------------------------------------------------
 
-from os.path import dirname
-
-from enthought.traits.api import Bool, Instance
-from enthought.pyface.api import ImageResource
-from enthought.pyface.action.api import Action
-from enthought.envisage.ui.workbench.api import WorkbenchWindow
-
-from puddle.resource.resource_view import RESOURCE_VIEW
-
-from common import IMAGE_LOCATION
+from enthought.envisage.api import Plugin
+from enthought.traits.api import List, Dict, String
 
 #------------------------------------------------------------------------------
-#  "UpAction" class:
+#  "ImageEditorPlugin" class:
 #------------------------------------------------------------------------------
 
-class UpAction(Action):
-    """ Defines an action for moving the workspace to the parent directory.
+class ImageEditorPlugin(Plugin):
+    """ Image editor plug-in.
     """
 
-    #--------------------------------------------------------------------------
-    #  "Action" interface:
-    #--------------------------------------------------------------------------
+    # Extension point IDs
+    EDITORS = "puddle.resource.editors"
 
-    # A longer description of the action:
-    description = "Move workspace to the parent directory"
+    # Unique plugin identifier
+    id = "puddle.image_editor"
 
-    # The action"s name (displayed on menus/tool bar tools etc):
-    name = "&Up"
-
-    # A short description of the action used for tooltip text etc:
-    tooltip = "Open parent directory"
-
-    # Keyboard accelerator:
-    accelerator = "Alt+Up"
-
-    # The action's image (displayed on tool bar tools etc):
-    image = ImageResource("up", search_path=[IMAGE_LOCATION])
+    # Human readable plugin name
+    name = "Image Editor"
 
     #--------------------------------------------------------------------------
-    #  "UpAction" interface:
+    #  Extensions (Contributions):
     #--------------------------------------------------------------------------
 
-    window = Instance(WorkbenchWindow)
+    # Contributed workspace editors:
+    editors = List(contributes_to=EDITORS)
 
     #--------------------------------------------------------------------------
-    #  "Action" interface:
+    #  "ImageEditorPlugin" interface:
     #--------------------------------------------------------------------------
 
-    def perform(self, event):
-        """ Perform the action.
+    def _editors_default(self):
+        """ Trait initialiser.
         """
-        # Note that we always offer the service via its name, but look it up
-        # via the actual protocol.
-        from puddle.resource.i_workspace import IWorkspace
+        from image_editor_extension import ImageEditorExtension
 
-        workspace = self.window.application.get_service(IWorkspace)
-        workspace.path = dirname(workspace.absolute_path)
-
-        view = self.window.get_view_by_id(RESOURCE_VIEW)
-        if view is not None:
-            workspace = self.window.application.get_service(IWorkspace)
-            view.tree_viewer.refresh(workspace)
+        return [ImageEditorExtension]
 
 # EOF -------------------------------------------------------------------------

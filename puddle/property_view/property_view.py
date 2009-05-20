@@ -20,75 +20,100 @@
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
 
-""" The 'Open With' menu.
+""" Defines a tree view of the workspace for the workbench.
 """
 
 #------------------------------------------------------------------------------
 #  Imports:
 #------------------------------------------------------------------------------
 
-import logging
-
-from enthought.pyface.action.api import Group, MenuManager
-from enthought.traits.api import Any, Bool, Instance, List, Str, Unicode
-from enthought.traits.api import on_trait_change
+from enthought.traits.api import Instance, HasTraits
+from enthought.traits.ui.api import View, Item, Label
+from enthought.pyface.image_resource import ImageResource
+from enthought.pyface.workbench.api import View as WorkbenchView
 from enthought.envisage.ui.workbench.workbench_window import WorkbenchWindow
 
-from puddle.resource.action.open_with_action import OpenWithAction
-
-from puddle.resource.resource_plugin import EDITORS
-
-logger = logging.getLogger(__name__)
-
 #------------------------------------------------------------------------------
-#  "OpenWithMenuManager" class:
+#  "PropertyView" class:
 #------------------------------------------------------------------------------
 
-class OpenWithMenuManager(MenuManager):
-    """ The 'Open With' menu.
+class PropertyView(WorkbenchView):
+    """ Defines a workbench view that displays property names and values
+        for selected items.
     """
 
     #--------------------------------------------------------------------------
-    #  "ActionManager" interface
+    #  "IView" interface:
     #--------------------------------------------------------------------------
 
-    # All of the groups in the manager.
-    groups = List(Group)
+    # The view's globally unique identifier:
+    id = "puddle.property_view.property_view"
 
-    # The manager"s unique identifier (if it has one).
-    id = Str("OpenWith")
+    # The view's name:
+    name = "Properties"
+
+    # The default position of the view relative to the item specified in the
+    # "relative_to" trait:
+    position = "right"
+
+    # An image used to represent the view to the user (shown in the view tab
+    # and in the view chooser etc).
+    image = ImageResource("table")
+
+    # The width of the item (as a fraction of the window width):
+    width = 0.2
+
+    # The category sed to group views when they are displayed to the user:
+    category = "General"
 
     #--------------------------------------------------------------------------
-    #  "MenuManager" interface
+    #  "WorkbenchView" interface:
     #--------------------------------------------------------------------------
 
-    # The menu manager"s name (if the manager is a sub-menu, this is what its
-    # label will be).
-    name = Unicode("Open With")
-
-    #--------------------------------------------------------------------------
-    #  "OpenWithMenuManager" interface
-    #--------------------------------------------------------------------------
-
-    # The workbench window that the menu is part of.
     window = Instance(WorkbenchWindow)
 
     #--------------------------------------------------------------------------
-    #  "ActionManager" interface
+    #  "PropertyView" interface:
     #--------------------------------------------------------------------------
 
-    def _groups_default(self):
-        """ Trait initialiser.
+    selected = Instance(HasTraits)
+
+    traits_view = View(
+        Item("selected", style="custom", show_label=False, springy=True),
+        scrollable=True)
+
+    #--------------------------------------------------------------------------
+    #  "IView" interface:
+    #--------------------------------------------------------------------------
+
+    def create_control(self, parent):
+        """ Create the view contents.
         """
-        app = self.window.application
-        editors = [factory() for factory in app.get_extensions(EDITORS)]
+        ui = self.edit_traits(parent=parent, kind="subpanel")
 
-        editors_group = Group(id="editors")
+        return ui.control
 
-        for editor in editors:
-            action = OpenWithAction(editor=editor, window=self.window)
-            editors_group.append(action)
+    #--------------------------------------------------------------------------
+    #  "WorkbenchView" interface:
+    #--------------------------------------------------------------------------
 
-        return [editors_group]
+    def _active_editor_changed_for_window(self, obj, name, old, new):
+        """ Adds a static handler to the new editors 'selected'
+            trait (if any).
+        """
+
+        if hasattr(old, "selected"):
+            old.on_trait_change(self.select, "selected", remove=True)
+        if hasattr(new, "selected"):
+            new.on_trait_change(self.select, "selected")
+            self.select(None)
+        else:
+            self.select(None)
+
+
+    def select(self, new):
+        """ Makes the newly selected object visible in the properties view.
+        """
+        self.selected = new
 
 # EOF -------------------------------------------------------------------------

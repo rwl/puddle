@@ -20,32 +20,29 @@
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
 
-""" Defines an action for moving the workspace to a new location.
+""" Defines an action for creating a new Python script.
 """
 
 #------------------------------------------------------------------------------
 #  Imports:
 #------------------------------------------------------------------------------
 
-from os.path import expanduser
+from os.path import exists
 
-from enthought.traits.api import Bool, Instance
-from enthought.pyface.api import ImageResource
+from enthought.io.api import File
+from enthought.pyface.api import ImageResource, FileDialog, CANCEL
 from enthought.pyface.action.api import Action
-from enthought.envisage.ui.workbench.workbench_window import WorkbenchWindow
 
-from move_action import DirectorySelection
+from puddle.resource.action.open_action import OpenAction
 
-from puddle.resource.resource_view import RESOURCE_VIEW
-
-from common import IMAGE_LOCATION
+from enthought.plugins.text_editor.editor.text_editor import TextEditor
 
 #------------------------------------------------------------------------------
-#  "LocationAction" class:
+#  "NewFileAction" class:
 #------------------------------------------------------------------------------
 
-class LocationAction(Action):
-    """ An action for moving the workspace to a new location.
+class NewFileAction(Action):
+    """ An action for creating a new Python script.
     """
 
     #--------------------------------------------------------------------------
@@ -53,25 +50,16 @@ class LocationAction(Action):
     #--------------------------------------------------------------------------
 
     # A longer description of the action:
-    description = "Move the workspace to a new location"
+    description = "Create a new file"
 
     # The action"s name (displayed on menus/tool bar tools etc):
-    name = "&Location..."
-
-    # The action's image (displayed on tool bar tools etc):
-    image = ImageResource("location", search_path=[IMAGE_LOCATION])
+    name = "File"
 
     # A short description of the action used for tooltip text etc:
-    tooltip = "Move workspace location"
+    tooltip = "Create a File"
 
-    # Keyboard accelerator:
-    accelerator = "Ctrl+L"
-
-    #--------------------------------------------------------------------------
-    #  "LocationAction" interface:
-    #--------------------------------------------------------------------------
-
-    window = Instance(WorkbenchWindow)
+    # The action's image (displayed on tool bar tools etc):
+    image = ImageResource("new")
 
     #--------------------------------------------------------------------------
     #  "Action" interface:
@@ -80,21 +68,12 @@ class LocationAction(Action):
     def perform(self, event):
         """ Perform the action.
         """
-        # Note that we always offer the service via its name, but look it up
-        # via the actual protocol.
-        from puddle.resource.i_workspace import IWorkspace
-        workspace = self.window.application.get_service(IWorkspace)
+        file = File("")
+        self.window.edit(file, TextEditor)
 
-        ds = DirectorySelection(directory=dirname(workspace.absolute_path))
+#        self.window.selection = [file]
+#        OpenAction(window=self.window).perform(event=None)
 
-        retval = ds.edit_traits(parent=self.window.control, kind="livemodal")
-
-        if retval.result:
-            workspace.path = ds.directory
-
-            # Refresh the workspace tree view
-            view = self.window.get_view_by_id(RESOURCE_VIEW)
-            if view is not None:
-                view.tree_viewer.refresh(workspace)
+        return
 
 # EOF -------------------------------------------------------------------------

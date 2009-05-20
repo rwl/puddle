@@ -20,29 +20,72 @@
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
 
-""" Defines the workspace interface.
+""" Python editor plug-in.
 """
 
 #------------------------------------------------------------------------------
 #  Imports:
 #------------------------------------------------------------------------------
 
-from enthought.traits.api import Interface
+from enthought.plugins.text_editor.text_editor_plugin import TextEditorPlugin
+
+from enthought.traits.api import List, Dict, String
 
 #------------------------------------------------------------------------------
-#  "IWorkspace" interface class:
+#  "PythonEditorPlugin" class:
 #------------------------------------------------------------------------------
 
-class IWorkspace(Interface):
-    """ Defines the workspace interface.
+class PythonEditorPlugin(TextEditorPlugin):
+    """ Python editor plug-in.
     """
 
-    def get_project(self, name):
-        """ Returns a project resource.
-        """
+    # Extension point IDs
+    ACTION_SETS = "enthought.envisage.ui.workbench.action_sets"
+    NEW_WIZARDS = "puddle.resource.new_wizards"
+    EDITORS = "puddle.resource.editors"
 
-    def add_project(self, project):
-        """ Adds a project resource to the workspace.
+    # Unique plugin identifier
+    id = "puddle.python_editor"
+
+    # Human readable plugin name
+    name = "Python Editor"
+
+    #--------------------------------------------------------------------------
+    #  Extensions (Contributions):
+    #--------------------------------------------------------------------------
+
+    # Contributed new resource wizards:
+    new_wizards = List(contributes_to=NEW_WIZARDS)
+
+    # Contributed workspace editors:
+    editors = List(contributes_to=EDITORS)
+
+    #--------------------------------------------------------------------------
+    #  "PythonEditorPlugin" interface:
+    #--------------------------------------------------------------------------
+
+    def _action_sets_default(self):
+        """ Trait initialiser.
         """
+        from python_editor_action_set import PythonEditorActionSet
+
+        return [PythonEditorActionSet]
+
+
+    def _new_wizards_default(self):
+        """ Trait initialiser.
+        """
+        from new_file_wizard import NewFileWizardExtension
+
+        return [NewFileWizardExtension]
+
+
+    def _editors_default(self):
+        """ Trait initialiser.
+        """
+        from python_editor_extension import \
+            PythonEditorExtension, TextEditorExtension
+
+        return [PythonEditorExtension, TextEditorExtension]
 
 # EOF -------------------------------------------------------------------------

@@ -30,7 +30,7 @@
 from enthought.pyface.api import ImageResource, OK
 from enthought.pyface.action.api import Action
 
-from envisage.resource.wizard.wizard_selection_wizard \
+from puddle.resource.wizard.wizard_selection_wizard \
     import WizardSelectionWizard
 
 from puddle.resource.resource_plugin import IMPORT_WIZARDS

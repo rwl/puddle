@@ -20,29 +20,41 @@
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
 
-""" Defines the workspace interface.
+""" Image editor extensions.
 """
 
 #------------------------------------------------------------------------------
 #  Imports:
 #------------------------------------------------------------------------------
 
-from enthought.traits.api import Interface
+from enthought.pyface.api import ImageResource
+from puddle.resource.editor import Editor
 
 #------------------------------------------------------------------------------
-#  "IWorkspace" interface class:
+#  "ImageEditorExtension" class:
 #------------------------------------------------------------------------------
 
-class IWorkspace(Interface):
-    """ Defines the workspace interface.
+class ImageEditorExtension(Editor):
+    """ Associates an image editor with certain file extensions.
     """
 
-    def get_project(self, name):
-        """ Returns a project resource.
-        """
+    # The object contribution's globally unique identifier.
+    id = "puddle.image_editor"
 
-    def add_project(self, project):
-        """ Adds a project resource to the workspace.
-        """
+    # A name that will be used in the UI for this editor
+    name = "Image Editor"
+
+    # An icon that will be used for all resources that match the
+    # specified extensions
+    image = ImageResource("image")
+
+    # The contributed editor class
+    editor_class = "puddle.image_editor.image_editor:ImageEditor"
+
+    # The list of file types understood by the editor
+    extensions = [".png", ".jpg", ".gif"]
+
+    # If true, this editor will be used as the default editor for the type
+    default = True
 
 # EOF -------------------------------------------------------------------------

@@ -20,32 +20,25 @@
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
 
-""" Defines an action for moving the workspace to a new location.
+""" Defines an action for running a Python file.
 """
 
 #------------------------------------------------------------------------------
 #  Imports:
 #------------------------------------------------------------------------------
 
-from os.path import expanduser
-
-from enthought.traits.api import Bool, Instance
+from enthought.io.api import File
+from enthought.traits.api import Instance
+from enthought.traits.ui.menu import Action
 from enthought.pyface.api import ImageResource
-from enthought.pyface.action.api import Action
 from enthought.envisage.ui.workbench.workbench_window import WorkbenchWindow
 
-from move_action import DirectorySelection
-
-from puddle.resource.resource_view import RESOURCE_VIEW
-
-from common import IMAGE_LOCATION
-
 #------------------------------------------------------------------------------
-#  "LocationAction" class:
+#  "RunAsPythonAction" class:
 #------------------------------------------------------------------------------
 
-class LocationAction(Action):
-    """ An action for moving the workspace to a new location.
+class PythonRunAction(Action):
+    """ Action for running a Python file.
     """
 
     #--------------------------------------------------------------------------
@@ -53,48 +46,76 @@ class LocationAction(Action):
     #--------------------------------------------------------------------------
 
     # A longer description of the action:
-    description = "Move the workspace to a new location"
+    description = "Run the file in the Python shell"
 
     # The action"s name (displayed on menus/tool bar tools etc):
-    name = "&Location..."
-
-    # The action's image (displayed on tool bar tools etc):
-    image = ImageResource("location", search_path=[IMAGE_LOCATION])
+    name = "&Python Run"
 
     # A short description of the action used for tooltip text etc:
-    tooltip = "Move workspace location"
+    tooltip = "Python Run"
+
+    # The action's image (displayed on tool bar tools etc):
+    image = ImageResource("python")
 
     # Keyboard accelerator:
-    accelerator = "Ctrl+L"
+    accelerator = "Ctrl+R"
 
     #--------------------------------------------------------------------------
-    #  "LocationAction" interface:
+    #  "PythonRunAction" interface:
     #--------------------------------------------------------------------------
 
     window = Instance(WorkbenchWindow)
 
     #--------------------------------------------------------------------------
+    #  "PythonRunAction" interface:
+    #--------------------------------------------------------------------------
+
+    def _selection_changed_for_window(self, new):
+        """ Enables the action when a File object is selected.
+        """
+        if len(new) == 1:
+            selection = new[0]
+            if isinstance(selection, File) and (selection.ext == ".py"):
+                self.enabled = True
+            else:
+                self.enabled = False
+        else:
+            self.enabled = False
+
+    #--------------------------------------------------------------------------
     #  "Action" interface:
     #--------------------------------------------------------------------------
+
+    def _enabled_default(self):
+        """ Trait initialiser.
+        """
+        if self.window.selection:
+            sel = self.window.selection[0]
+            if isinstance(sel, File) and (sel.ext == ".py"):
+                return True
+            else:
+                return False
+        else:
+            return False
+
 
     def perform(self, event):
         """ Perform the action.
         """
-        # Note that we always offer the service via its name, but look it up
-        # via the actual protocol.
-        from puddle.resource.i_workspace import IWorkspace
-        workspace = self.window.application.get_service(IWorkspace)
+        selected = self.window.selection[0]
 
-        ds = DirectorySelection(directory=dirname(workspace.absolute_path))
+        # The file must be saved first!
+#        self.save()
 
-        retval = ds.edit_traits(parent=self.window.control, kind="livemodal")
+        # Execute the code.
+        if len(selected.path) > 0:
+            view = self.window.get_view_by_id(
+                'enthought.plugins.python_shell_view')
 
-        if retval.result:
-            workspace.path = ds.directory
-
-            # Refresh the workspace tree view
-            view = self.window.get_view_by_id(RESOURCE_VIEW)
             if view is not None:
-                view.tree_viewer.refresh(workspace)
+                view.execute_command('execfile(r"%s")' % selected.path,
+                    hidden=False)
+
+        return
 
 # EOF -------------------------------------------------------------------------

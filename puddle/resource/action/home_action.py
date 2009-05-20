@@ -80,7 +80,7 @@ class HomeAction(Action):
         """
         # Note that we always offer the service via its name, but look it up
         # via the actual protocol.
-        from envisage.resource.i_workspace import IWorkspace
+        from puddle.resource.i_workspace import IWorkspace
 
         workspace = self.window.application.get_service(IWorkspace)
         workspace.path = expanduser("~")

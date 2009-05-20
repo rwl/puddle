@@ -20,74 +20,48 @@
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
 
-""" Defines an action for moving the workspace to the parent directory.
+""" Property view plug-in.
 """
 
 #------------------------------------------------------------------------------
 #  Imports:
 #------------------------------------------------------------------------------
 
-from os.path import dirname
-
-from enthought.traits.api import Bool, Instance
-from enthought.pyface.api import ImageResource
-from enthought.pyface.action.api import Action
-from enthought.envisage.ui.workbench.api import WorkbenchWindow
-
-from puddle.resource.resource_view import RESOURCE_VIEW
-
-from common import IMAGE_LOCATION
+from enthought.envisage.api import Plugin
+from enthought.traits.api import List
 
 #------------------------------------------------------------------------------
-#  "UpAction" class:
+#  "PropertyViewPlugin" class:
 #------------------------------------------------------------------------------
 
-class UpAction(Action):
-    """ Defines an action for moving the workspace to the parent directory.
+class PropertyViewPlugin(Plugin):
+    """ Property view plug-in.
     """
+    # Extension point IDs
+    VIEWS = "enthought.envisage.ui.workbench.views"
+
+    # Unique plugin identifier
+    id = "puddle.property_view"
+
+    # Human readable plugin name
+    name = "Property View"
 
     #--------------------------------------------------------------------------
-    #  "Action" interface:
+    #  Extensions (Contributions):
     #--------------------------------------------------------------------------
 
-    # A longer description of the action:
-    description = "Move workspace to the parent directory"
-
-    # The action"s name (displayed on menus/tool bar tools etc):
-    name = "&Up"
-
-    # A short description of the action used for tooltip text etc:
-    tooltip = "Open parent directory"
-
-    # Keyboard accelerator:
-    accelerator = "Alt+Up"
-
-    # The action's image (displayed on tool bar tools etc):
-    image = ImageResource("up", search_path=[IMAGE_LOCATION])
+    # Views contributed to the workbench:
+    contributed_views = List(contributes_to=VIEWS)
 
     #--------------------------------------------------------------------------
-    #  "UpAction" interface:
+    #  "PropertyViewPlugin" interface:
     #--------------------------------------------------------------------------
 
-    window = Instance(WorkbenchWindow)
-
-    #--------------------------------------------------------------------------
-    #  "Action" interface:
-    #--------------------------------------------------------------------------
-
-    def perform(self, event):
-        """ Perform the action.
+    def _contributed_views_default(self):
+        """ Trait initialiser.
         """
-        # Note that we always offer the service via its name, but look it up
-        # via the actual protocol.
-        from puddle.resource.i_workspace import IWorkspace
+        from property_view import PropertyView
 
-        workspace = self.window.application.get_service(IWorkspace)
-        workspace.path = dirname(workspace.absolute_path)
-
-        view = self.window.get_view_by_id(RESOURCE_VIEW)
-        if view is not None:
-            workspace = self.window.application.get_service(IWorkspace)
-            view.tree_viewer.refresh(workspace)
+        return [PropertyView]
 
 # EOF -------------------------------------------------------------------------

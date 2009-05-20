@@ -43,7 +43,6 @@ from enthought.pyface.viewer.api import \
     TreeContentProvider, TreeLabelProvider, ViewerFilter, \
     TreeViewer, ViewerSorter
 
-from resource import Project, Workspace
 from editor import Editor
 
 from resource_plugin import EDITORS

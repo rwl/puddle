@@ -19,30 +19,3 @@
 #  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 #  IN THE SOFTWARE.
 #------------------------------------------------------------------------------
-
-""" Defines the workspace interface.
-"""
-
-#------------------------------------------------------------------------------
-#  Imports:
-#------------------------------------------------------------------------------
-
-from enthought.traits.api import Interface
-
-#------------------------------------------------------------------------------
-#  "IWorkspace" interface class:
-#------------------------------------------------------------------------------
-
-class IWorkspace(Interface):
-    """ Defines the workspace interface.
-    """
-
-    def get_project(self, name):
-        """ Returns a project resource.
-        """
-
-    def add_project(self, project):
-        """ Adds a project resource to the workspace.
-        """
-
-# EOF -------------------------------------------------------------------------
