@@ -38,10 +38,17 @@ from enthought.traits.api import Instance, List
 from enthought.pyface.api import ImageResource, ApplicationWindow, GUI
 from enthought.pyface.action.api import MenuManager, Action, ToolBarManager
 from enthought.envisage.ui.workbench.workbench_window import WorkbenchWindow
+from enthought.etsconfig.api import ETSConfig
 
 from enthought.pyface.viewer.api import \
-    TreeContentProvider, TreeLabelProvider, ViewerFilter, \
-    TreeViewer, ViewerSorter
+    TreeContentProvider, TreeLabelProvider, ViewerFilter, ViewerSorter
+
+if ETSConfig.toolkit == "wx":
+    from wx_tree_viewer import TreeViewer
+elif ETSConfig.toolkit == "qt4":
+    from qt_tree_viewer import TreeViewer
+else:
+    from enthought.pyface.viewer.api import TreeViewer
 
 from editor import Editor
 
@@ -228,11 +235,11 @@ class ResourceTreeViewer(TreeViewer):
     #--------------------------------------------------------------------------
 
     # The content provider provides the actual tree data.
-    content_provider = Instance(ResourceTreeContentProvider, ())
+#    content_provider = Instance(ResourceTreeContentProvider, ())
 
     # The label provider provides, err, the labels for the items in the tree
     # (a label can have text and/or an image).
-    label_provider = Instance(ResourceTreeLabelProvider, ())
+#    label_provider = Instance(ResourceTreeLabelProvider, ())
 
     # Selection mode (must be either of 'single' or 'extended').
     selection_mode = "single"
@@ -240,84 +247,20 @@ class ResourceTreeViewer(TreeViewer):
     # Should the root of the tree be shown?
 #    show_root = False
 
-
-    def refresh(self, element):#=None):
-        """ Refresh the tree starting from the specified element.
-
-            Call this when the STRUCTURE of the content has changed.
-        """
-        # Refresh from the root if no element specified
-#        if element is None:
-#            pid = self.control.GetRootItem()
-#            data = self.control.GetPyData(pid)
-#            if data is not None:
-#                populated, element = data
-
-        # Has the element actually appeared in the tree yet?
-        pid = self._element_to_id_map.get(self._get_key(element), None)
-        if pid is not None:
-            # The item data is a tuple.  The first element indicates whether or
-            # not we have already populated the item with its children.  The
-            # second element is the actual item data.
-            populated, element = self.control.GetPyData(pid)#
-
-            # If an element is expanded and is not collapsed before we continue
-            # then the pizza slice points down, but no children are displayed.
-            # The node then has to be manually collapsed and then expanded.
-            self.control.Collapse(pid)
-
-            # fixme: We should find a cleaner way other than deleting all of
-            # the element's children and re-adding them!
-            self._delete_children(pid)
-            self.control.SetPyData(pid, (False, element))
-
-            # Does the element have any children?
-            has_children = self.content_provider.has_children(element)
-            self.control.SetItemHasChildren(pid, has_children)
-
-            # Expand it.
-            self.control.Expand(pid)
-
-        else:
-            print '**** pid is None!!! ****'
-
-        return
-
-
-    def _delete_children(self, pid):
-        """ Recursively deletes the children of the specified element.
-        """
-        cookie = 0
-
-#        (cid, cookie) = self.control.GetFirstChild(pid, cookie) # Obsolete
-        (cid, cookie) = self.control.GetFirstChild(pid)
-        while cid.IsOk():
-            # Recursively delete the child's children.
-            self._delete_children(cid)
-
-            # Remove the reference to the item's data.
-            populated, element = self.control.GetPyData(cid)
-            del self._element_to_id_map[self._get_key(element)]
-            self.control.SetPyData(cid, None)
-
-            # Next!
-            (cid, cookie) = self.control.GetNextChild(pid, cookie)
-
-        self.control.DeleteChildren(pid)
-
-        return
-
     #--------------------------------------------------------------------------
     #  "ResourceTreeViewer" interface
     #--------------------------------------------------------------------------
 
-    def _element_right_clicked_changed(self, event):
-        """ Forces selection of the item under the cursor on right click.
+    def _content_provider_default(self):
+        """ Trait initialiser.
         """
-        element, point = event
+        return ResourceTreeContentProvider()
 
-        wx_item, flags = self.control.HitTest(point)
-        self.control.SelectItem(wx_item)
+
+    def _label_provider_default(self):
+        """ Trait initialiser.
+        """
+        return ResourceTreeLabelProvider()
 
 #------------------------------------------------------------------------------
 #  Standalone call:
