@@ -286,7 +286,8 @@ if __name__ == "__main__":
             """
             self.tree_viewer = tree_viewer = ResourceTreeViewer(
                 parent, input=File(expanduser("~")),
-                sorter=FileSorter())
+                sorter=FileSorter(),
+                filters=[HideHiddenFiles()])
 
             return tree_viewer.control
 

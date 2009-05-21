@@ -254,29 +254,12 @@ class TreeViewer(ContentViewer):
     #  Private interface:
     #--------------------------------------------------------------------------
 
-#    def _get_style(self):
-#        """ Returns the wx style flags for creating the tree control.
-#        """
-#        # Start with the default flags.
-#        style = self.STYLE
-#
-#        if not self.show_root:
-#            style = style | wx.TR_HIDE_ROOT | wx.TR_LINES_AT_ROOT
-#
-#        if self.selection_mode != 'single':
-#            style = style | wx.TR_MULTIPLE | wx.TR_EXTENDED
-#
-#        return style
-
-
     def _add_element(self, pid, element):
         """ Adds 'element' as a child of the element identified by 'pid'.
 
             If 'pid' is None then we are adding the root element.
         """
         tree = self.control
-
-        print "ADDING ELEMENT:", pid, element
 
         # Get the tree item image index and text.
 #        image_index = self._get_image_index(element)
@@ -285,15 +268,12 @@ class TreeViewer(ContentViewer):
 
         # Add the element.
         if pid is None:
-#            wxid = self.control.AddRoot(text, image_index, image_index)
             nid = QtGui.QTreeWidgetItem(tree, [text])
             nid.setIcon(0, image.create_icon())
-            tree.addTopLevelItem(nid)
 
         else:
-#            wxid = self.control.AppendItem(pid, text, image_index, image_index)
             nid = QtGui.QTreeWidgetItem(pid, [text])
-            pid.addChild(nid)
+            nid.setIcon(0, image.create_icon())
 
         # If we are adding the root element but the root is hidden, get its
         # children.
@@ -303,9 +283,7 @@ class TreeViewer(ContentViewer):
                 self._add_element(nid, child)
 
         # Does the element have any children?
-        has_children = self.content_provider.has_children(element)
-        if has_children:
-            print "ADDING DUMMY:", has_children
+        if self.content_provider.has_children(element):
             # Qt only draws the control that expands the tree if there is a
             # child.  As the tree is being populated lazily we create a
             # dummy that will be removed when the node is expanded for the
@@ -331,21 +309,6 @@ class TreeViewer(ContentViewer):
             nid.setExpanded(True)
 
         return
-
-
-#    def _get_image_index(self, element):
-#        """ Returns the tree item image index for an element.
-#        """
-#        # Get the image used to represent the element.
-#        image = self.label_provider.get_image(self, element)
-#
-#        if image is not None:
-#            image_index = self._image_list.GetIndex(image.absolute_path)
-#
-#        else:
-#            image_index = -1
-#
-#        return image_index
 
 
     def _get_key(self, element):
@@ -380,46 +343,26 @@ class TreeViewer(ContentViewer):
 
         nid.setIcon(0, image.create_icon())
 
-#        self.control.SetItemImage(wxid, image_index, wx.TreeItemIcon_Normal)
-#        self.control.SetItemImage(wxid, image_index, wx.TreeItemIcon_Selected)
-
         # Get the tree item text.
         text = self._get_text(element)
         nid.setText(0, text)
 
-        # Does the item have any children?
-#        has_children = self.content_provider.has_children(element)
-#        self.control.SetItemHasChildren(wxid, has_children)
-
         return
 
 
-    def _unpack_event(self, event):
-        """ Unpacks the event to see whether a tree element was involved.
-        """
-        print event
-        print type(event)
-        print dir(event)
-
-        try:
-            point = event.pos()
-
-        except:
-            point = event.globalPos()
-
-        nid = self.control.itemAt(point)
-
-        # Warning: On GTK we have to check the flags before we call 'GetPyData'
-        # because if we call it when the hit test returns 'nowhere' it will
-        # barf (on Windows it simply returns 'None' 8^()
-#        if flags & wx.TREE_HITTEST_NOWHERE:
-#            data = None
+#    def _unpack_event(self, event):
+#        """ Unpacks the event to see whether a tree element was involved.
+#        """
+#        try:
+#            point = event.pos()
 #
-#        else:
-#            data = self.control.GetPyData(wxid)
-        data = self._get_node_data(nid)
-
-        return data, nid, point
+#        except:
+#            point = event.globalPos()
+#
+#        nid = self.control.itemAt(point)
+#        data = self._get_node_data(nid)
+#
+#        return data, nid, point
 
 
     def _get_selection(self):
@@ -431,13 +374,6 @@ class TreeViewer(ContentViewer):
             if data is not None:
                 populated, element = data
                 elements.append(element)
-
-            # 'data' can be None here if (for example) the element has been
-            # deleted.
-            #
-            # fixme: Can we stop this happening?!?!?
-            else:
-                pass
 
         return elements
 
@@ -456,11 +392,8 @@ class TreeViewer(ContentViewer):
             del self._element_to_id_map[self._get_key(element)]
             self._set_node_data(cid, None)
 
-            # Next!
-#            cid = self.control.GetNextChild(pid, cookie)
             cid.removeChild(cidx)
 
-#        self.control.DeleteChildren(pid)
 
         return
 
@@ -519,17 +452,20 @@ class TreeViewer(ContentViewer):
     def _on_right_down(self, event):
         """ Called when the right mouse button is clicked on the tree.
         """
-        data, nid, point = self._unpack_event(event)
+#        data, nid, point = self._unpack_event(event)
+        point = event
+        nid = self.control.itemAt(point)
+        data = self._get_node_data(nid)
 
         # Did the right click occur on a tree item?
         if data is not None:
             populated, element = data
 
             # Trait notification.
-            self.element_right_clicked = (element, point)
+            self.element_right_clicked = (element, (point.x(), point.y()))
 
         # Give other event handlers a chance.
-        event.Skip()
+#        event.ignore()
 
         return
 
@@ -537,7 +473,11 @@ class TreeViewer(ContentViewer):
     def _on_left_down(self, event):
         """ Called when the left mouse button is clicked on the tree.
         """
-        data, nid, point = self._unpack_event(event)
+#        data, nid, point = self._unpack_event(event)
+        nid = event
+        data = self._get_node_data(nid)
+
+        point = None
 
         # Did the left click occur on a tree item?
         if data is not None:
@@ -547,62 +487,47 @@ class TreeViewer(ContentViewer):
             self.element_left_clicked = (element, point)
 
         # Give other event handlers a chance.
-        event.ignore()
+#        event.ignore()
 
         return
 
 
-#    def _on_tree_item_expanding(self, event):
-#        """ Called when a tree item is about to expand.
-#        """
-#        # Which item is expanding?
-#        wxid = event.GetItem()
-#
-#        # The item data is a tuple. The first element indicates whether or not
-#        # we have already populated the item with its children.  The second
-#        # element is the actual item data.
-#        populated, element = self.control.GetPyData(wxid)
-#
-#        # Give the label provider a chance to veto the expansion.
-#        if self.label_provider.is_expandable(self, element):
-#            # Lazily populate the item's children.
-#            if not populated:
-#                children = self.content_provider.get_children(element)
-#
-#                # Sorting...
-#                if self.sorter is not None:
-#                    self.sorter.sort(self, element, children)
-#
-#                # Filtering....
-#                for child in children:
-#                    for filter in self.filters:
-#                        if not filter.select(self, element, child):
-#                            break
-#
-#                    else:
-#                        self._add_element(wxid, child)
-#
-#                # The element is now populated!
-#                self.control.SetPyData(wxid, (True, element))
-#
-#        else:
-#            event.Veto()
-#
-#        return
-
-
     def _on_tree_item_expanded(self, event):
-        """ Called when a tree item has been expanded.
+        """ Called when a tree item is about to expand.
         """
-        # Which item was expanded?
+        # Which item is expanding?
         nid = event
 
+        # The item data is a tuple. The first element indicates whether or not
+        # we have already populated the item with its children.  The second
+        # element is the actual item data.
+        populated, element = self._get_node_data(nid)
+
+        # Lazily populate the item's children.
+        if not populated:
+            children = self.content_provider.get_children(element)
+
+            # Sorting...
+            if self.sorter is not None:
+                self.sorter.sort(self, element, children)
+
+            # Filtering....
+            for child in children:
+                for filter in self.filters:
+                    if not filter.select(self, element, child):
+                        break
+
+                else:
+                    self._add_element(nid, child)
+
+            # The element is now populated!
+            self._set_node_data(nid, (True, element))
+
         # Remove any dummy node.
-#        dummy = getattr(nid, '_dummy', None)
-#        if dummy is not None:
-#            print "REMOVING DUMMY:", dummy
-#            nid.removeChild(dummy)
-#            del nid._dummy
+        dummy = getattr(nid, '_dummy', None)
+        if dummy is not None:
+            nid.removeChild(dummy)
+            del nid._dummy
 
         # The item data is a tuple.  The first element indicates whether or not
         # we have already populated the item with its children.  The second
@@ -614,26 +539,6 @@ class TreeViewer(ContentViewer):
 
         # Trait notification.
         self.element_expanded = element
-
-        return
-
-
-#    def _on_tree_item_collapsing(self, event):
-#        """ Called when a tree item is about to collapse.
-#        """
-#        # Which item is collapsing?
-#        wxid = event.GetItem()
-#
-#        # The item data is a tuple.  The first element indicates whether or not
-#        # we have already populated the item with its children.  The second
-#        # element is the actual item data.
-#        populated, element = self.control.GetPyData(wxid)
-#
-#        # Give the label provider a chance to veto the collapse.
-#        if not self.label_provider.is_collapsible(self, element):
-#            event.Veto()
-#
-#        return
 
 
     def _on_tree_item_collapsed(self, event):
@@ -673,7 +578,7 @@ class TreeViewer(ContentViewer):
         return
 
 
-    def _on_tree_sel_changed(self, event):
+    def _on_tree_sel_changed(self):
         """ Called when the selection is changed.
         """
         # Trait notification.
