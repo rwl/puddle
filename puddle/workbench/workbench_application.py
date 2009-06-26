@@ -85,14 +85,14 @@ class WorkbenchApplication(WorkbenchApplication):
         return about_dialog
 
 
-#    def _splash_screen_default(self):
-#        """ Trait initialiser.
-#        """
-#        splash_screen = SplashScreen(
-#            image=ImageResource("splash"), show_log_messages=False,
-#            text_color="black"#, text_font="10 point Monospace"
-#        )
-#
-#        return splash_screen
+    def _splash_screen_default(self):
+        """ Trait initialiser.
+        """
+        splash_screen = SplashScreen(
+            image=ImageResource("splash"), show_log_messages=False,
+            text_color="black"#, text_font="10 point Monospace"
+        )
+
+        return splash_screen
 
 # EOF -------------------------------------------------------------------------
