@@ -22,19 +22,18 @@
 
 from setuptools import setup, find_packages
 
-setup(
-    author="Richard W. Lincoln",
-    author_email="r.w.lincoln@gmail.com",
-    description="Extensible Python IDE.",
-    url="http://rwl.github.com/puddle",
-    version="0.1.1",
-    entry_points={"gui_scripts": ["puddle = puddle.run:main"]},
-    install_requires=["EnvisagePlugins", "TraitsBackendWX", "Enable",
-        "ConfigObj", "IPython"],
-    license="MIT",
-    name="Puddle",
-    packages=find_packages(),
-    zip_safe=False
-)
+setup(author="Richard W. Lincoln",
+      author_email="r.w.lincoln@gmail.com",
+      description="Extensible Python IDE.",
+      url="http://rwl.github.com/puddle",
+      version="0.1.2",
+      entry_points={"gui_scripts": ["puddle = puddle.run:main"]},
+      install_requires=["EnvisagePlugins", "TraitsBackendWX", "Enable",
+          "ConfigObj", "IPython"],
+      license="MIT",
+      name="Puddle",
+      include_package_data=True,
+      packages=find_packages(),
+      zip_safe=False)
 
 # EOF -------------------------------------------------------------------------
